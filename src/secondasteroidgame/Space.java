@@ -15,6 +15,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.awt.geom.AffineTransform;
 import javax.swing.JOptionPane;
+import path.TrigonometryCalculator;
 
 /**
  *
@@ -27,6 +28,7 @@ class Space extends Environment {
     int shipX = 400;
     int shipY = 300;
     int rotationSpeed = 5;
+    int shipSpeed = 6;
     Velocity velocity;
     String name;
     
@@ -35,7 +37,7 @@ class Space extends Environment {
     }
 
     public Space() {
-        
+        velocity = new Velocity(0, 0);
         name = JOptionPane.showInputDialog("What Ship? American or Soviet");
         ship = ResourceTools.loadImageFromResource("SecondAsteroidGame/" + name +" Ship.png");
     }
@@ -46,6 +48,21 @@ class Space extends Environment {
 
     @Override
     public void timerTaskHandler() {
+        this.shipX -= velocity.x;
+        
+        if (shipX < -50) {
+            shipX = this.getWidth() - 1;
+        } else if (shipX > this.getWidth() + 50) {
+            shipX = -50;
+        }
+        
+        if (shipY < -50) {
+            shipY = this.getHeight() - 1;
+        } else if (shipY > this.getHeight() + 50) {
+            shipY = -50;
+        }
+        
+        this.shipY -= velocity.y;
     }
 
     @Override
@@ -59,6 +76,9 @@ class Space extends Environment {
             shipY = (shipY - 5);
         } else if (e.getKeyCode() == KeyEvent.VK_DOWN) {
             shipY = (shipY + 5);
+        } else if (e.getKeyCode() == KeyEvent.VK_SPACE) {
+            this.velocity = TrigonometryCalculator.getVelocity(Math.toRadians((angle + 90) % 360), shipSpeed);
+
         }
         System.out.println("Angle " + angle);
     }
