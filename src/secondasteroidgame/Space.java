@@ -54,7 +54,6 @@ class Space extends Environment {
         velocity = new Velocity(0, 0);
         asteroidVelocity = new Velocity(3,4);
         name = JOptionPane.showInputDialog("What Ship? American or Soviet");
-        lazer = ResourceTools.loadImageFromResource("SecondAsteroidGame/Lazer.png");
         fullAsteroid = ResourceTools.loadImageFromResource("SecondAsteroidGame/Full Asteroid.png");
         ship = ResourceTools.loadImageFromResource("SecondAsteroidGame/" + name +" Ship.png");
         background = ResourceTools.loadImageFromResource("SecondAsteroidGame/Galaxy 1.jpg");
@@ -123,7 +122,8 @@ class Space extends Environment {
             this.lazerVelocity = TrigonometryCalculator.getVelocity(Math.toRadians((angle + 90) % 360), shipSpeed);
             this.velocity = TrigonometryCalculator.getVelocity(Math.toRadians((angle + 90) % 360), shipSpeed);
         } else if (e.getKeyCode() == KeyEvent.VK_SPACE) {
-            this.lazerVelocity = TrigonometryCalculator.getVelocity(Math.toRadians((angle + 90) % 360), lazerSpeed);
+//            this.lazerVelocity = TrigonometryCalculator.getVelocity(Math.toRadians((angle + 90) % 360), lazerSpeed);
+            
 
 
         }

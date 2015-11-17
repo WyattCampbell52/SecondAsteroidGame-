@@ -7,6 +7,8 @@ package secondasteroidgame;
 
 import environment.Actor;
 import environment.Velocity;
+import images.ResourceTools;
+import java.awt.Image;
 import java.awt.Point;
 import java.awt.image.BufferedImage;
 
@@ -15,11 +17,22 @@ import java.awt.image.BufferedImage;
  * @author WyattCampbell
  */
 public class Lazer extends Actor {
+    
+    Image lazer;
+    Point position;
+    Velocity speed;
 
     public Lazer(BufferedImage image, Point position, Velocity velocity) {
         super(image, position, velocity);
+        
+        position = new Point();
+        speed = speed;
+        lazer = ResourceTools.loadImageFromResource("SecondAsteroidGame/Lazer.png");
+        
+        
+    }
+
+    
+    
     }
     
-    
-    
-}
