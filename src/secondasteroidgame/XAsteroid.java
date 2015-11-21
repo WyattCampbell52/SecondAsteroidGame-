@@ -6,7 +6,6 @@
 package secondasteroidgame;
 
 import environment.Velocity;
-import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
@@ -17,9 +16,8 @@ import path.TrigonometryCalculator;
  *
  * @author WyattCampbell
  */
-public class Ship {
-
-    public Ship(Image image, int x, int y, Velocity velocity, int angularVelocity, int angle) {
+public class XAsteroid {
+    public XAsteroid(Image image, int x, int y, Velocity velocity, int angularVelocity, int angle) {
         this.image = image;
         this.x = x;
         this.y = y;
@@ -27,7 +25,6 @@ public class Ship {
         this.angularVelocity = angularVelocity;
         this.angle = angle;
     }
-
     public void draw(Graphics graphics) {
         
         
@@ -181,15 +178,15 @@ public class Ship {
 
     }
     void boundries(){
-        if (x > 900) {
-            x = -50;
-        } else if (x < -50) {
-            x = 900;
+        if (x > 600) {
+            x = -100;
+        } else if (x < -100) {
+            x = 600;
         }
-        if (y > 550) {
-            y = -100;
-        } else if (y < -100) {
-            y = 550;
+        if (y > 1000) {
+            y = -75;
+        } else if (y < -75) {
+            y = 1000;
         }
         
     }
@@ -271,3 +268,5 @@ public class Ship {
 
 
 }
+
+
