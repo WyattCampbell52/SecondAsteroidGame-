@@ -35,10 +35,7 @@ public class XAsteroid {
         at.setToRotation(getAngleInRadians(), x + (image.getWidth(null) / 2), y + (image.getHeight(null) / 2));
         g2d.setTransform(at);
         g2d.drawImage(image, x, y, null);
-        
-        g2d.setTransform(olde);
-        g2d.dispose();
-    }
+            }
 
 //<editor-fold defaultstate="collapsed" desc="Properties">
     private int x;

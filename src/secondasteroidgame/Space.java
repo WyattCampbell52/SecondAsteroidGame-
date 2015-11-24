@@ -25,7 +25,7 @@ class Space extends Environment {
 
     Ship ship;
     XAsteroid xAsteroid;
-    
+
     Image oldeShip;
     Image background;
     Image fullAsteroid;
@@ -37,20 +37,19 @@ class Space extends Environment {
         name = "American";
         name = JOptionPane.showInputDialog("What Ship? American or Soviet");
         fullAsteroid = ResourceTools.loadImageFromResource("SecondAsteroidGame/Full Asteroid.png");
-        oldeShip = ResourceTools.loadImageFromResource("SecondAsteroidGame/" + name +" Ship.png");
+        oldeShip = ResourceTools.loadImageFromResource("SecondAsteroidGame/" + name + " Ship.png");
         background = ResourceTools.loadImageFromResource("SecondAsteroidGame/Galaxy 1.jpg");
         ship = new Ship(oldeShip, 400, 300, new Velocity(0, 0), 0, 0);
-        xAsteroid = new XAsteroid(fullAsteroid, 100, -10, new Velocity(0,-1), 0, 0);
+        xAsteroid = new XAsteroid(fullAsteroid, 100, -10, new Velocity(0, -1), 0, 0);
     }
-    
+
     @Override
     public void initializeEnvironment() {
     }
 
     @Override
     public void timerTaskHandler() {
-        
-        
+
         if (ship != null) {
             ship.move();
             ship.boundries();
@@ -59,8 +58,7 @@ class Space extends Environment {
             xAsteroid.move();
             xAsteroid.boundries();
         }
-        
-        
+
     }
 
     @Override
@@ -73,17 +71,14 @@ class Space extends Environment {
             System.out.println(ship.getAngle());
         } else if (e.getKeyCode() == KeyEvent.VK_UP) {
             ship.accelerate(1);
-            System.out.println(ship.getSpeed());            
+            System.out.println(ship.getSpeed());
         } else if (e.getKeyCode() == KeyEvent.VK_DOWN) {
             ship.decelarate(1);
-            System.out.println(ship.getSpeed());    
-        }
-        else if (e.getKeyCode() == KeyEvent.VK_SPACE) {
-            
-
+            System.out.println(ship.getSpeed());
+        } else if (e.getKeyCode() == KeyEvent.VK_SPACE) {
 
         }
-        
+
     }
 
     @Override
@@ -99,19 +94,16 @@ class Space extends Environment {
     public void paintEnvironment(Graphics graphics) {
         if (background != null) {
             graphics.drawImage(background, WIDTH, HEIGHT, this);
+        }
         
         if (xAsteroid != null) {
             xAsteroid.draw(graphics);
         }
+        
         if (ship != null) {
             ship.draw(graphics);
-        } 
+            
         }
-//        if (fullAsteroid != null) {
-//            AffineTransform at = AffineTransform.getRotateInstance(Math.toRadians(angle));
-//            at.setToRotation(getAngleInRadians(), lazerX , lazerY);
-//
-//            graphics.drawImage(fullAsteroid, asteroidY, asteroidX, this);
-//        }
+        
     }
-    }
+}
