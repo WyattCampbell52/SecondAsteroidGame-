@@ -16,8 +16,8 @@ import path.TrigonometryCalculator;
  *
  * @author WyattCampbell
  */
-public class XAsteroid {
-    public XAsteroid(Image image, int x, int y, Velocity velocity, int angularVelocity, int angle) {
+public class YAsteroid {
+    public YAsteroid(Image image, int x, int y, Velocity velocity, int angularVelocity, int angle) {
         this.image = image;
         this.x = x;
         this.y = y;
@@ -258,7 +258,6 @@ public class XAsteroid {
      * @param rotationSpeed the rotationSpeed to set
      */
     public void setRotationSpeed(int rotationSpeed) {
-        rotationSpeed = 10;
         this.rotationSpeed = rotationSpeed;
     }
         //</editor-fold>

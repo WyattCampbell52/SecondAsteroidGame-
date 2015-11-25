@@ -25,30 +25,42 @@ class Space extends Environment {
 
     Ship ship;
     XAsteroid xAsteroid;
+    YAsteroid yAsteroid;
+    Lazer lazer;
+    Hub hub;
 
-    Image oldeShip;
+    Image shipChoice;
+    Image lazerImage;
     Image background;
     Image fullAsteroid;
-    Image lazer;
     String name;
+    private String score;
 
     public Space() {
         this.setBackground(background);
+        score = "0000";
         name = "American";
         name = JOptionPane.showInputDialog("What Ship? American or Soviet");
         fullAsteroid = ResourceTools.loadImageFromResource("SecondAsteroidGame/Full Asteroid.png");
-        oldeShip = ResourceTools.loadImageFromResource("SecondAsteroidGame/" + name + " Ship.png");
+        shipChoice = ResourceTools.loadImageFromResource("SecondAsteroidGame/" + name + " Ship.png");
+        lazerImage = ResourceTools.loadImageFromResource("SecondAsteroidGame/Lazer.png");
         background = ResourceTools.loadImageFromResource("SecondAsteroidGame/Galaxy 1.jpg");
-        ship = new Ship(oldeShip, 400, 300, new Velocity(0, 0), 0, 0);
-        xAsteroid = new XAsteroid(fullAsteroid, 100, -10, new Velocity(0, -1), 0, 0);
+        ship = new Ship(shipChoice, 400, 300, new Velocity(0, 0), 0, 0);
+        xAsteroid = new XAsteroid(fullAsteroid, 100, -10, new Velocity(0, -3), 0, 0);
+        yAsteroid = new YAsteroid(fullAsteroid, -10, 325, new Velocity(-3,0), 0, 0);
+        hub = new Hub(score, 400, 30);
+        lazer = new Lazer(lazerImage, ship.getX(), ship.getY(), ship.getVelocity(), ship.getAngularVelocity(), ship.getAngle());
     }
-
     @Override
     public void initializeEnvironment() {
     }
 
     @Override
     public void timerTaskHandler() {
+        if (lazer != null) {
+            lazer.move();
+            lazer.boundries();
+        }
 
         if (ship != null) {
             ship.move();
@@ -57,6 +69,13 @@ class Space extends Environment {
         if (xAsteroid != null) {
             xAsteroid.move();
             xAsteroid.boundries();
+            xAsteroid.rotate(xAsteroid.getRotationSpeed());
+
+        }
+        if (yAsteroid != null) {
+            yAsteroid.move();
+            yAsteroid.boundries();
+            yAsteroid.rotate(yAsteroid.getRotationSpeed());
         }
 
     }
@@ -65,9 +84,11 @@ class Space extends Environment {
     public void keyPressedHandler(KeyEvent e) {
         if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
             ship.rotate(ship.getRotationSpeed());
+            lazer.rotate(lazer.getRotationSpeed());
             System.out.println(ship.getAngle());
         } else if (e.getKeyCode() == KeyEvent.VK_LEFT) {
             ship.rotate(-ship.getRotationSpeed());
+            lazer.rotate(-lazer.getRotationSpeed());
             System.out.println(ship.getAngle());
         } else if (e.getKeyCode() == KeyEvent.VK_UP) {
             ship.accelerate(1);
@@ -76,7 +97,9 @@ class Space extends Environment {
             ship.decelarate(1);
             System.out.println(ship.getSpeed());
         } else if (e.getKeyCode() == KeyEvent.VK_SPACE) {
-
+            lazer = new Lazer(lazerImage, ship.getX(), ship.getY(), ship.getVelocity(), ship.getAngularVelocity(), ship.getAngle());
+            lazer.accelerate(lazer.getSpeed());
+            System.out.println(lazer.getSpeed());
         }
 
     }
@@ -95,9 +118,18 @@ class Space extends Environment {
         if (background != null) {
             graphics.drawImage(background, WIDTH, HEIGHT, this);
         }
+        if (hub != null) {
+            hub.draw(graphics);
+        }
         
         if (xAsteroid != null) {
             xAsteroid.draw(graphics);
+        }
+        if (yAsteroid != null) {
+            yAsteroid.draw(graphics);
+        }
+        if (lazer != null) {
+            lazer.draw(graphics);
         }
         
         if (ship != null) {
