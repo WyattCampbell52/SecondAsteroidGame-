@@ -14,6 +14,7 @@ import java.awt.Image;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.awt.geom.AffineTransform;
+import java.util.ArrayList;
 import javax.swing.JOptionPane;
 import path.TrigonometryCalculator;
 
@@ -24,8 +25,8 @@ import path.TrigonometryCalculator;
 class Space extends Environment {
 
     Ship ship;
-    XAsteroid xAsteroid;
-    YAsteroid yAsteroid;
+    private ArrayList<Asteroid> asteriods;
+
     Lazer lazer;
     Hub hub;
 
@@ -46,11 +47,19 @@ class Space extends Environment {
         lazerImage = ResourceTools.loadImageFromResource("SecondAsteroidGame/Lazer.png");
         background = ResourceTools.loadImageFromResource("SecondAsteroidGame/Galaxy 1.jpg");
         ship = new Ship(shipChoice, 400, 300, new Velocity(0, 0), 0, 0);
-        xAsteroid = new XAsteroid(fullAsteroid, 100, -10, new Velocity(0, -3), 0, 0);
-        yAsteroid = new YAsteroid(fullAsteroid, -10, 325, new Velocity(-3,0), 0, 0);
+
+        asteriods = new ArrayList<>();
+        asteriods.add(new Asteroid(fullAsteroid, 100, -10, new Velocity(0, -3), 0, 0));
+        asteriods.add(new Asteroid(fullAsteroid, -10, 325, new Velocity(-3, 0), 0, 0));
+        asteriods.add(new Asteroid(fullAsteroid, -10, 125, new Velocity(-4, 2), 0, 0));
+        asteriods.add(new Asteroid(fullAsteroid, -10, 305, new Velocity(-2, 4), 0, 0));
+        asteriods.add(new Asteroid(fullAsteroid, -60, 325, new Velocity(-5, 0), 0, 0));
+        asteriods.add(new Asteroid(fullAsteroid, -100, 325, new Velocity(3, 3), 0, 0));
+
         hub = new Hub(score, 400, 30);
         lazer = new Lazer(lazerImage, ship.getX(), ship.getY(), ship.getVelocity(), ship.getAngularVelocity(), ship.getAngle());
     }
+
     @Override
     public void initializeEnvironment() {
     }
@@ -66,16 +75,14 @@ class Space extends Environment {
             ship.move();
             ship.boundries();
         }
-        if (xAsteroid != null) {
-            xAsteroid.move();
-            xAsteroid.boundries();
-            xAsteroid.rotate(xAsteroid.getRotationSpeed());
 
-        }
-        if (yAsteroid != null) {
-            yAsteroid.move();
-            yAsteroid.boundries();
-            yAsteroid.rotate(yAsteroid.getRotationSpeed());
+        if (asteriods != null) {
+            for (Asteroid asteroid : asteriods) {
+                asteroid.move();
+                asteroid.boundries();
+                asteroid.rotate();
+            }
+
         }
 
     }
@@ -122,20 +129,27 @@ class Space extends Environment {
             hub.draw(graphics);
         }
         
-        if (xAsteroid != null) {
-            xAsteroid.draw(graphics);
+        if (asteriods != null) {
+            for (Asteroid asteroid : asteriods){
+                asteroid.draw(graphics);
+            }
         }
-        if (yAsteroid != null) {
-            yAsteroid.draw(graphics);
-        }
+        
+
+//        if (xAsteroid != null) {
+//            xAsteroid.draw(graphics);
+//        }
+//        if (yAsteroid != null) {
+//            yAsteroid.draw(graphics);
+//        }
         if (lazer != null) {
             lazer.draw(graphics);
         }
-        
+
         if (ship != null) {
             ship.draw(graphics);
-            
+
         }
-        
+
     }
 }
