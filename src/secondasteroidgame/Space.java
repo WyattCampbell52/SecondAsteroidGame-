@@ -26,6 +26,7 @@ class Space extends Environment {
 
     Ship ship;
     private ArrayList<Asteroid> asteriods;
+    private ArrayList<Lazer> lazers;
 
     Lazer lazer;
     Hub hub;
@@ -35,11 +36,12 @@ class Space extends Environment {
     Image background;
     Image fullAsteroid;
     String name;
-    private String score;
+    int level;
+    String score;
 
     public Space() {
         this.setBackground(background);
-        score = "0000";
+        score = "Score " + level;
         name = "American";
         name = JOptionPane.showInputDialog("What Ship? American or Soviet");
         fullAsteroid = ResourceTools.loadImageFromResource("SecondAsteroidGame/Full Asteroid.png");
@@ -48,6 +50,7 @@ class Space extends Environment {
         background = ResourceTools.loadImageFromResource("SecondAsteroidGame/Galaxy 1.jpg");
         ship = new Ship(shipChoice, 400, 300, new Velocity(0, 0), 0, 0);
 
+        //<editor-fold defaultstate="collapsed" desc="Asteroids">
         asteriods = new ArrayList<>();
         asteriods.add(new Asteroid(fullAsteroid, 100, -10, new Velocity(0, -3), 0, 0));
         asteriods.add(new Asteroid(fullAsteroid, -10, 325, new Velocity(-3, 0), 0, 0));
@@ -55,9 +58,23 @@ class Space extends Environment {
         asteriods.add(new Asteroid(fullAsteroid, -10, 305, new Velocity(-2, 4), 0, 0));
         asteriods.add(new Asteroid(fullAsteroid, -60, 325, new Velocity(-5, 0), 0, 0));
         asteriods.add(new Asteroid(fullAsteroid, -100, 325, new Velocity(3, 3), 0, 0));
+//</editor-fold>
+        
+        //<editor-fold defaultstate="collapsed" desc="Lazer">
+        lazers = new ArrayList<>();
+        lazers.add(new Lazer(lazerImage, ship.getX(), ship.getY(), new Velocity(ship.getX(), ship.getY()), ship.getAngularVelocity(), ship.getAngle()));
+        lazers.add(new Lazer(lazerImage, ship.getX(), ship.getY(), new Velocity(ship.getX(), ship.getY()), ship.getAngularVelocity(), ship.getAngle()));
+        lazers.add(new Lazer(lazerImage, ship.getX(), ship.getY(), new Velocity(ship.getX(), ship.getY()), ship.getAngularVelocity(), ship.getAngle()));
+        lazers.add(new Lazer(lazerImage, ship.getX(), ship.getY(), new Velocity(ship.getX(), ship.getY()), ship.getAngularVelocity(), ship.getAngle()));
+        lazers.add(new Lazer(lazerImage, ship.getX(), ship.getY(), new Velocity(ship.getX(), ship.getY()), ship.getAngularVelocity(), ship.getAngle()));
+        lazers.add(new Lazer(lazerImage, ship.getX(), ship.getY(), new Velocity(ship.getX(), ship.getY()), ship.getAngularVelocity(), ship.getAngle()));
+        lazers.add(new Lazer(lazerImage, ship.getX(), ship.getY(), new Velocity(ship.getX(), ship.getY()), ship.getAngularVelocity(), ship.getAngle()));
+        lazers.add(new Lazer(lazerImage, ship.getX(), ship.getY(), new Velocity(ship.getX(), ship.getY()), ship.getAngularVelocity(), ship.getAngle()));
+        lazers.add(new Lazer(lazerImage, ship.getX(), ship.getY(), new Velocity(ship.getX(), ship.getY()), ship.getAngularVelocity(), ship.getAngle()));
+//</editor-fold>
 
-        hub = new Hub(score, 400, 30);
-        lazer = new Lazer(lazerImage, ship.getX(), ship.getY(), ship.getVelocity(), ship.getAngularVelocity(), ship.getAngle());
+
+        hub = new Hub(score, 380, 30);
     }
 
     @Override
@@ -98,19 +115,16 @@ class Space extends Environment {
             lazer.rotate(-lazer.getRotationSpeed());
             System.out.println(ship.getAngle());
         } else if (e.getKeyCode() == KeyEvent.VK_UP) {
-            ship.accelerate(1);
+            ship.accelerate(2);
             System.out.println(ship.getSpeed());
         } else if (e.getKeyCode() == KeyEvent.VK_DOWN) {
-            ship.decelarate(1);
+            ship.decelarate(2);
             System.out.println(ship.getSpeed());
         } else if (e.getKeyCode() == KeyEvent.VK_SPACE) {
-            lazer = new Lazer(lazerImage, ship.getX(), ship.getY(), ship.getVelocity(), ship.getAngularVelocity(), ship.getAngle());
-            lazer.accelerate(lazer.getSpeed());
+             
+            }            
             System.out.println(lazer.getSpeed());
-        }
-
     }
-
     @Override
     public void keyReleasedHandler(KeyEvent e) {
     }
@@ -135,15 +149,7 @@ class Space extends Environment {
             }
         }
         
-
-//        if (xAsteroid != null) {
-//            xAsteroid.draw(graphics);
-//        }
-//        if (yAsteroid != null) {
-//            yAsteroid.draw(graphics);
-//        }
         if (lazer != null) {
-            lazer.draw(graphics);
         }
 
         if (ship != null) {

@@ -15,6 +15,7 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.Point;
+import java.awt.event.KeyEvent;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
@@ -32,11 +33,11 @@ public class Lazer {
         this.y = y;
         this.velocity = velocity;
         this.angularVelocity = angularVelocity;
-        this.angle = angle;
+        this.angle = angle;       
     }
 
-    public void draw(Graphics graphics) {
-
+    public void draw() {
+        if (e.getKeyCode() == KeyEvent.VK_SPACE) {
         Graphics2D g2d = (Graphics2D) graphics;
         AffineTransform olde = g2d.getTransform();
 
@@ -44,10 +45,12 @@ public class Lazer {
         at.setToRotation(getAngleInRadians(), x + (image.getWidth(null) / 2), y + (image.getHeight(null) / 2));
         g2d.setTransform(at);
         g2d.drawImage(image, x, y, null);
-
+        }
     }
 
 //<editor-fold defaultstate="collapsed" desc="Properties">
+    KeyEvent e;
+    Graphics graphics;
     Lazer lazer;
     Ship ship;
     private int x;

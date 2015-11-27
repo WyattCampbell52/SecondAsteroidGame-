@@ -24,7 +24,10 @@ public class Asteroid {
         this.velocity = velocity;
         this.angularVelocity = angularVelocity;
         this.angle = angle;
+        
     }
+    
+    
     public void draw(Graphics graphics) {
         
         
