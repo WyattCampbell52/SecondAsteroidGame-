@@ -5,6 +5,7 @@
  */
 package secondasteroidgame;
 
+import environment.Direction;
 import environment.Environment;
 import environment.Velocity;
 import images.ResourceTools;
@@ -29,6 +30,7 @@ class Space extends Environment {
     private ArrayList<Lazer> lazers;
 
     Lazer lazer;
+    Lazer2 lazer2;
     Hub hub;
 
     Image shipChoice;
@@ -49,7 +51,8 @@ class Space extends Environment {
         lazerImage = ResourceTools.loadImageFromResource("SecondAsteroidGame/Lazer.png");
         background = ResourceTools.loadImageFromResource("SecondAsteroidGame/Galaxy 1.jpg");
         ship = new Ship(shipChoice, 400, 300, new Velocity(0, 0), 0, 0);
-
+        lazer2 = new Lazer2(ship.getX(), ship.getY()-100, lazerImage);
+        this.setBackground(background);
         //<editor-fold defaultstate="collapsed" desc="Asteroids">
         asteriods = new ArrayList<>();
         asteriods.add(new Asteroid(fullAsteroid, 100, -10, new Velocity(0, -3), 0, 0));
@@ -83,6 +86,7 @@ class Space extends Environment {
 
     @Override
     public void timerTaskHandler() {
+        level++;
         if (lazer != null) {
             lazer.move();
             lazer.boundries();
@@ -108,11 +112,9 @@ class Space extends Environment {
     public void keyPressedHandler(KeyEvent e) {
         if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
             ship.rotate(ship.getRotationSpeed());
-            lazer.rotate(lazer.getRotationSpeed());
             System.out.println(ship.getAngle());
         } else if (e.getKeyCode() == KeyEvent.VK_LEFT) {
             ship.rotate(-ship.getRotationSpeed());
-            lazer.rotate(-lazer.getRotationSpeed());
             System.out.println(ship.getAngle());
         } else if (e.getKeyCode() == KeyEvent.VK_UP) {
             ship.accelerate(2);
@@ -121,9 +123,12 @@ class Space extends Environment {
             ship.decelarate(2);
             System.out.println(ship.getSpeed());
         } else if (e.getKeyCode() == KeyEvent.VK_SPACE) {
-             
-            }            
-            System.out.println(lazer.getSpeed());
+            lazer2.move();
+        }
+            
+//        if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
+//            bob.setDirection(Direction.RIGHT);
+//            bob.move();
     }
     @Override
     public void keyReleasedHandler(KeyEvent e) {
@@ -136,9 +141,7 @@ class Space extends Environment {
 
     @Override
     public void paintEnvironment(Graphics graphics) {
-        if (background != null) {
-            graphics.drawImage(background, WIDTH, HEIGHT, this);
-        }
+        
         if (hub != null) {
             hub.draw(graphics);
         }
@@ -150,6 +153,9 @@ class Space extends Environment {
         }
         
         if (lazer != null) {
+        }
+        if (lazer2 != null) {
+            lazer2.draw(graphics);
         }
 
         if (ship != null) {
