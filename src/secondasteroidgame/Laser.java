@@ -5,39 +5,31 @@
  */
 package secondasteroidgame;
 
-import environment.Actor;
-import environment.Direction;
 import environment.Velocity;
-import grid.Grid;
-import images.ResourceTools;
-import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
-import java.awt.Point;
-import java.awt.event.KeyEvent;
 import java.awt.geom.AffineTransform;
-import java.awt.image.BufferedImage;
-import java.util.ArrayList;
 import path.TrigonometryCalculator;
 
 /**
  *
  * @author WyattCampbell
  */
-public class Lazer {
+public class Laser {
 
-    public Lazer(Image image, int x, int y, Velocity velocity, int angularVelocity, int angle) {
+    public Laser(Image image, int x, int y, Velocity velocity, int angularVelocity, int angle) {
         this.image = image;
         this.x = x;
         this.y = y;
         this.velocity = velocity;
         this.angularVelocity = angularVelocity;
-        this.angle = angle;       
+        this.angle = angle;
+        
+        this.startTime = System.currentTimeMillis();
     }
 
-    public void draw() {
-        if (e.getKeyCode() == KeyEvent.VK_SPACE) {
+    public void draw(Graphics graphics) {
         Graphics2D g2d = (Graphics2D) graphics;
         AffineTransform olde = g2d.getTransform();
 
@@ -45,26 +37,30 @@ public class Lazer {
         at.setToRotation(getAngleInRadians(), x + (image.getWidth(null) / 2), y + (image.getHeight(null) / 2));
         g2d.setTransform(at);
         g2d.drawImage(image, x, y, null);
-        }
+        
     }
 
 //<editor-fold defaultstate="collapsed" desc="Properties">
-    KeyEvent e;
-    Graphics graphics;
-    Lazer lazer;
-    Ship ship;
     private int x;
     private int y;
+    
     private int maxX;
     private int minX;
     private int maxY;
     private int minY;
+    
     private Velocity velocity;
+    private int speed;
+    
     private int angularVelocity;
     private int angle;
-    private int speed;
-    private Image image;
     private int rotationSpeed = 5;
+    
+    private Image image;
+    
+    private long startTime;
+    private long maxDurationMillis = 1000;
+    private boolean alive = true;
 
     /**
      * @return the x
@@ -184,7 +180,12 @@ public class Lazer {
     void move() {
         x -= velocity.x;
         y -= velocity.y;
-
+        checkLifeTime();
+    }
+    
+    public boolean checkLifeTime(){
+        alive = ((System.currentTimeMillis() - startTime) < this.maxDurationMillis);
+        return alive;
     }
 
     void boundries() {
@@ -275,5 +276,26 @@ public class Lazer {
         this.rotationSpeed = rotationSpeed;
     }
     //</editor-fold>
+
+    /**
+     * @param startTime the startTime to set
+     */
+    public void setStartTime(long startTime) {
+        this.startTime = startTime;
+    }
+
+    /**
+     * @return the alive
+     */
+    public boolean isAlive() {
+        return alive;
+    }
+
+    /**
+     * @param alive the alive to set
+     */
+    public void setAlive(boolean alive) {
+        this.alive = alive;
+    }
 
 }
