@@ -5,18 +5,14 @@
  */
 package secondasteroidgame;
 
-import environment.Direction;
 import environment.Environment;
 import environment.Velocity;
 import images.ResourceTools;
 import java.awt.Graphics;
-import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
-import java.awt.geom.AffineTransform;
 import java.util.ArrayList;
-import javax.swing.JOptionPane;
 import path.TrigonometryCalculator;
 
 /**
@@ -29,7 +25,6 @@ class Space extends Environment {
     private ArrayList<Asteroid> asteriods;
     private ArrayList<Laser> lasers;
 
-//    Laser lazer;
     Hub hub;
 
     Image shipChoice;
@@ -54,24 +49,16 @@ class Space extends Environment {
         //<editor-fold defaultstate="collapsed" desc="Asteroids">
         asteriods = new ArrayList<>();
         asteriods.add(new Asteroid(fullAsteroid, 100, -10, TrigonometryCalculator.getVelocity(Math.toRadians(90), 7), 0, 0));
-        asteriods.add(new Asteroid(fullAsteroid, -10, 325, TrigonometryCalculator.getVelocity(Math.toRadians(180), 1), 0, 0));
+        asteriods.add(new Asteroid(fullAsteroid, -10, 325, TrigonometryCalculator.getVelocity(Math.toRadians(180), 3), 0, 0));
         asteriods.add(new Asteroid(fullAsteroid, -10, 125, TrigonometryCalculator.getVelocity(Math.toRadians(134), 5), 0, 0));
         asteriods.add(new Asteroid(fullAsteroid, -10, 305, TrigonometryCalculator.getVelocity(Math.toRadians(247), 8), 0, 0));
-        asteriods.add(new Asteroid(fullAsteroid, -60, 325, TrigonometryCalculator.getVelocity(Math.toRadians(180), 1), 0, 0));
-        asteriods.add(new Asteroid(fullAsteroid, -100, 325, TrigonometryCalculator.getVelocity(Math.toRadians(180), 1), 0, 0));
+        asteriods.add(new Asteroid(fullAsteroid, -60, 325, TrigonometryCalculator.getVelocity(Math.toRadians(326), -5), 0, 0));
+        asteriods.add(new Asteroid(fullAsteroid, -100, 325, TrigonometryCalculator.getVelocity(Math.toRadians(250), 4), 0, 0));
 //</editor-fold>
 
         //<editor-fold defaultstate="collapsed" desc="Laser">
         lasers = new ArrayList<>();
-//        lazers.add(new Laser(lazerImage, ship.getX(), ship.getY(), new Velocity(ship.getX(), ship.getY()), ship.getAngularVelocity(), ship.getAngle()));
-//        lazers.add(new Laser(lazerImage, ship.getX(), ship.getY(), new Velocity(ship.getX(), ship.getY()), ship.getAngularVelocity(), ship.getAngle()));
-//        lazers.add(new Laser(lazerImage, ship.getX(), ship.getY(), new Velocity(ship.getX(), ship.getY()), ship.getAngularVelocity(), ship.getAngle()));
-//        lazers.add(new Laser(lazerImage, ship.getX(), ship.getY(), new Velocity(ship.getX(), ship.getY()), ship.getAngularVelocity(), ship.getAngle()));
-//        lazers.add(new Laser(lazerImage, ship.getX(), ship.getY(), new Velocity(ship.getX(), ship.getY()), ship.getAngularVelocity(), ship.getAngle()));
-//        lazers.add(new Laser(lazerImage, ship.getX(), ship.getY(), new Velocity(ship.getX(), ship.getY()), ship.getAngularVelocity(), ship.getAngle()));
-//        lazers.add(new Laser(lazerImage, ship.getX(), ship.getY(), new Velocity(ship.getX(), ship.getY()), ship.getAngularVelocity(), ship.getAngle()));
-//        lazers.add(new Laser(lazerImage, ship.getX(), ship.getY(), new Velocity(ship.getX(), ship.getY()), ship.getAngularVelocity(), ship.getAngle()));
-//        lazers.add(new Laser(lazerImage, ship.getX(), ship.getY(), new Velocity(ship.getX(), ship.getY()), ship.getAngularVelocity(), ship.getAngle()));
+//     
 //</editor-fold>
 
         hub = new Hub(score, 380, 30);
@@ -93,6 +80,9 @@ class Space extends Environment {
         if (lasers != null) {
             for (Laser laser : lasers) {
                 laser.move();
+                laser.boundries();
+                        contact();
+
             }
         }
 
@@ -105,19 +95,42 @@ class Space extends Environment {
         }
 
         cleanLaser();
+        contact();
     }
 
     private void cleanLaser() {
         if (lasers != null) {
             ArrayList<Laser> toRemove = new ArrayList<>();
-            
+
             for (Laser laser : lasers) {
                 if (!laser.isAlive()) {
                     toRemove.add(laser);
                 }
             }
-
             lasers.removeAll(toRemove);
+        }
+
+    }
+
+    private void contact() {
+
+        if (lasers != null) {
+            ArrayList<Laser> toLaserRemoves = new ArrayList<>();
+            ArrayList<Asteroid> toAsteroidRemoves = new ArrayList<>();
+
+            for (Laser laser : lasers) {
+                for (Asteroid asteroid : asteriods) {
+                    if (laser.getX() == asteroid.getX()) {
+                        if (laser.getY() == asteroid.getY()) {
+                            toLaserRemoves.add(laser);
+                            toAsteroidRemoves.add(asteroid);
+                            System.out.println("Dead");
+                        }
+                    }
+                }
+                lasers.removeAll(toLaserRemoves);
+                asteriods.removeAll(toAsteroidRemoves);
+            }
         }
     }
 
@@ -133,12 +146,13 @@ class Space extends Environment {
             ship.accelerate(2);
             System.out.println(ship.getSpeed());
         } else if (e.getKeyCode() == KeyEvent.VK_DOWN) {
-            ship.decelarate(1);
+            if (ship.getSpeed() < -2) {
+                ship.decelarate(-2);
+            }
+            ship.decelarate(2);
             System.out.println(ship.getSpeed());
         } else if (e.getKeyCode() == KeyEvent.VK_SPACE) {
-//            lazer.accelerate(2);
-            lasers.add(new Laser(lazerImage, ship.getX(), ship.getY(),
-                    TrigonometryCalculator.getVelocity(Math.toRadians(ship.getAngle() + 90), 7), 0, ship.getAngle()));
+            lasers.add(new Laser(lazerImage, ship.getX(), ship.getY(), TrigonometryCalculator.getVelocity(Math.toRadians(ship.getAngle() + 90), ship.getSpeed() + 7), 0, ship.getAngle()));
         }
     }
 
@@ -175,9 +189,5 @@ class Space extends Environment {
         if (ship != null) {
             ship.draw(graphics);
         }
-
-//        if (lazer != null) {
-//            lazer.draw(graphics);
-//        }
     }
 }

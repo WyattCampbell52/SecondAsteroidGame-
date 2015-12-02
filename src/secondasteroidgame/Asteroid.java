@@ -29,8 +29,6 @@ public class Asteroid {
     
     
     public void draw(Graphics graphics) {
-        
-        
         Graphics2D g2d = (Graphics2D) graphics;
         AffineTransform olde = g2d.getTransform();
         

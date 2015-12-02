@@ -180,6 +180,7 @@ public class Laser {
     void move() {
         x -= velocity.x;
         y -= velocity.y;
+        
         checkLifeTime();
     }
     
@@ -188,7 +189,7 @@ public class Laser {
         return alive;
     }
 
-    void boundries() {
+    public void boundries() {
         if (x > 900) {
             x = -50;
         } else if (x < -50) {
