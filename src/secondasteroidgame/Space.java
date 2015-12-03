@@ -22,7 +22,15 @@ import path.TrigonometryCalculator;
 class Space extends Environment {
 
     Ship ship;
-    private ArrayList<Asteroid> asteriods;
+    Laser laser;
+    
+    private ArrayList<FullAsteroid> fullAsteriods;
+    private ArrayList<LeftHalfAsteroid> leftHalfAsteroids;
+    private ArrayList<RightHalfAsteroid> rightHalfAsteroids;
+    private ArrayList<LeftQuaterTopAsteroid> leftQuaterTopAsteroids;
+    private ArrayList<LeftQuaterBottomAsteroid> leftQuaterBottomAsteroids;
+    private ArrayList<RightQuaterTopAsteroid> rightQuaterTopAsteroids;
+    private ArrayList<RightQuaterBottomAsteroid> rightQuaterBottomAsteroids;
     private ArrayList<Laser> lasers;
 
     Hub hub;
@@ -31,6 +39,8 @@ class Space extends Environment {
     Image lazerImage;
     Image background;
     Image fullAsteroid;
+    Image leftHalfAsteroid;
+    Image rightHalfAsteroid;
     String name;
     int level;
     String score;
@@ -41,21 +51,39 @@ class Space extends Environment {
         name = "American";
 //        name = JOptionPane.showInputDialog("What Ship? American or Soviet");
         fullAsteroid = ResourceTools.loadImageFromResource("SecondAsteroidGame/Full Asteroid.png");
+        leftHalfAsteroid = ResourceTools.loadImageFromResource("SecondAsteroidGame/Asteroid Left Half.png");
+        rightHalfAsteroid = ResourceTools.loadImageFromResource("SecondAsteroidGame/Asteroid Right Half.png");        
         shipChoice = ResourceTools.loadImageFromResource("SecondAsteroidGame/" + name + " Ship.png");
         lazerImage = ResourceTools.loadImageFromResource("SecondAsteroidGame/Lazer.png");
         background = ResourceTools.loadImageFromResource("SecondAsteroidGame/Galaxy 1.jpg");
         ship = new Ship(shipChoice, 400, 300, new Velocity(0, 0), 0, 0);
         this.setBackground(background);
-        //<editor-fold defaultstate="collapsed" desc="Asteroids">
-        asteriods = new ArrayList<>();
-        asteriods.add(new Asteroid(fullAsteroid, 100, -10, TrigonometryCalculator.getVelocity(Math.toRadians(90), 7), 0, 0));
-        asteriods.add(new Asteroid(fullAsteroid, -10, 325, TrigonometryCalculator.getVelocity(Math.toRadians(180), 3), 0, 0));
-        asteriods.add(new Asteroid(fullAsteroid, -10, 125, TrigonometryCalculator.getVelocity(Math.toRadians(134), 5), 0, 0));
-        asteriods.add(new Asteroid(fullAsteroid, -10, 305, TrigonometryCalculator.getVelocity(Math.toRadians(247), 8), 0, 0));
-        asteriods.add(new Asteroid(fullAsteroid, -60, 325, TrigonometryCalculator.getVelocity(Math.toRadians(326), -5), 0, 0));
-        asteriods.add(new Asteroid(fullAsteroid, -100, 325, TrigonometryCalculator.getVelocity(Math.toRadians(250), 4), 0, 0));
+        //<editor-fold defaultstate="collapsed" desc="FullAsteroids">
+        fullAsteriods = new ArrayList<>();
+        fullAsteriods.add(new FullAsteroid(fullAsteroid, 100, -10, TrigonometryCalculator.getVelocity(Math.toRadians(90), 7), 0, 0));
+        fullAsteriods.add(new FullAsteroid(fullAsteroid, -10, 325, TrigonometryCalculator.getVelocity(Math.toRadians(180), 3), 0, 0));
+        fullAsteriods.add(new FullAsteroid(fullAsteroid, -10, 125, TrigonometryCalculator.getVelocity(Math.toRadians(134), 5), 0, 0));
+        fullAsteriods.add(new FullAsteroid(fullAsteroid, -10, 305, TrigonometryCalculator.getVelocity(Math.toRadians(247), 8), 0, 0));
+        fullAsteriods.add(new FullAsteroid(fullAsteroid, -60, 325, TrigonometryCalculator.getVelocity(Math.toRadians(326), -5), 0, 0));
+        fullAsteriods.add(new FullAsteroid(fullAsteroid, -100, 325, TrigonometryCalculator.getVelocity(Math.toRadians(250), 4), 0, 0));
 //</editor-fold>
-
+        
+        //<editor-fold defaultstate="collapsed" desc="HalfAsteroid">
+        leftHalfAsteroids = new ArrayList<>();
+        
+        rightHalfAsteroids = new ArrayList<>();
+//</editor-fold>
+        
+        //<editor-fold defaultstate="collapsed" desc="QuaterAsteroid">
+        leftQuaterTopAsteroids = new ArrayList<>();
+        
+        leftQuaterBottomAsteroids = new ArrayList<>();
+        
+        rightQuaterTopAsteroids = new ArrayList<>();
+        
+        rightQuaterBottomAsteroids = new ArrayList<>();
+//</editor-fold>
+        
         //<editor-fold defaultstate="collapsed" desc="Laser">
         lasers = new ArrayList<>();
 //     
@@ -70,6 +98,7 @@ class Space extends Environment {
 
     @Override
     public void timerTaskHandler() {
+        score = score;
         level++;
 
         if (ship != null) {
@@ -81,27 +110,46 @@ class Space extends Environment {
             for (Laser laser : lasers) {
                 laser.move();
                 laser.boundries();
-                        contact();
+                        fullContact();
 
             }
         }
 
-        if (asteriods != null) {
-            for (Asteroid asteroid : asteriods) {
+        if (fullAsteriods != null) {
+            for (FullAsteroid asteroid : fullAsteriods) {
                 asteroid.move();
                 asteroid.boundries();
                 asteroid.rotate();
             }
         }
+        if (leftHalfAsteroids != null) {
+            for (LeftHalfAsteroid asteroid : leftHalfAsteroids) {
+                asteroid.move();
+                asteroid.boundries();
+                asteroid.rotate();
+            }
+        }
+        if (rightHalfAsteroids != null) {
+            for (RightHalfAsteroid asteroid : rightHalfAsteroids) {
+                asteroid.move();
+                asteroid.boundries();
+                asteroid.rotate();
+            }
+        }
+        
+        
+        
 
         cleanLaser();
-        contact();
+        fullContact();
+        halfContact();
     }
 
+    //<editor-fold defaultstate="collapsed" desc="Laser Duration">
     private void cleanLaser() {
         if (lasers != null) {
             ArrayList<Laser> toRemove = new ArrayList<>();
-
+            
             for (Laser laser : lasers) {
                 if (!laser.isAlive()) {
                     toRemove.add(laser);
@@ -109,30 +157,80 @@ class Space extends Environment {
             }
             lasers.removeAll(toRemove);
         }
-
     }
+//</editor-fold>
+    
 
-    private void contact() {
-
+    //<editor-fold defaultstate="collapsed" desc="Contact">
+    private void fullContact() {
+        
         if (lasers != null) {
             ArrayList<Laser> toLaserRemoves = new ArrayList<>();
-            ArrayList<Asteroid> toAsteroidRemoves = new ArrayList<>();
-
+            ArrayList<FullAsteroid> toAsteroidRemoves = new ArrayList<>();
+            
             for (Laser laser : lasers) {
-                for (Asteroid asteroid : asteriods) {
-                    if (laser.getX() == asteroid.getX()) {
-                        if (laser.getY() == asteroid.getY()) {
-                            toLaserRemoves.add(laser);
-                            toAsteroidRemoves.add(asteroid);
-                            System.out.println("Dead");
-                        }
+                for (FullAsteroid asteroid : fullAsteriods) {
+//                    if (laser.getX() == asteroid.getX()) {
+                    if (laser.getY() == asteroid.getY()) {
+                        toAsteroidRemoves.add(asteroid);
+                        System.out.println("Dead");
+                        leftHalfAsteroids.add(new LeftHalfAsteroid(leftHalfAsteroid, asteroid.getX(), asteroid.getY(), asteroid.getVelocity(), asteroid.getAngularVelocity(), asteroid.getAngle()));
+                        rightHalfAsteroids.add(new RightHalfAsteroid(leftHalfAsteroid, asteroid.getX(), asteroid.getY(), asteroid.getVelocity(), asteroid.getAngularVelocity(), asteroid.getAngle()));
+                        score = score + 10;
+//                        }
                     }
                 }
-                lasers.removeAll(toLaserRemoves);
-                asteriods.removeAll(toAsteroidRemoves);
+                fullAsteriods.removeAll(toAsteroidRemoves);
             }
         }
     }
+//</editor-fold>
+    //<editor-fold defaultstate="collapsed" desc="HalfContact">
+    private void halfContact() {
+        
+        if (lasers != null) {
+            ArrayList<Laser> toLaserRemoves = new ArrayList<>();
+            ArrayList<LeftHalfAsteroid> toAsteroidRemoves = new ArrayList<>();
+            
+            for (Laser laser : lasers) {
+                for (LeftHalfAsteroid asteroid : leftHalfAsteroids) {
+//                    if (laser.getX() == asteroid.getX()) {
+                    if (laser.getY() == asteroid.getY()) {
+                        toAsteroidRemoves.add(asteroid);
+                        System.out.println("Dead");
+                         score = score + 10;
+//                        }
+                    }
+                }
+                leftHalfAsteroids.removeAll(toAsteroidRemoves);
+            }
+        }
+    }
+//</editor-fold>
+    //<editor-fold defaultstate="collapsed" desc="QuaterContact">
+    private void quaterContact() {
+        
+        if (lasers != null) {
+            ArrayList<Laser> toLaserRemoves = new ArrayList<>();
+            ArrayList<LeftHalfAsteroid> toAsteroidRemoves = new ArrayList<>();
+            
+            for (Laser laser : lasers) {
+                for (LeftHalfAsteroid asteroid : leftHalfAsteroids) {
+//                    if (laser.getX() == asteroid.getX()) {
+                    if (laser.getY() == asteroid.getY()) {
+                        toAsteroidRemoves.add(asteroid);
+                        System.out.println("Dead");
+                        leftHalfAsteroids.add(new LeftHalfAsteroid(leftHalfAsteroid, asteroid.getX(), asteroid.getY(), asteroid.getVelocity(), asteroid.getAngularVelocity(), asteroid.getAngle()));
+                        rightHalfAsteroids.add(new RightHalfAsteroid(leftHalfAsteroid, asteroid.getX(), asteroid.getY(), asteroid.getVelocity(), asteroid.getAngularVelocity(), asteroid.getAngle()));
+                        score = score + 10;
+//                        }
+                    }
+                }
+                fullAsteriods.removeAll(toAsteroidRemoves);
+            }
+        }
+    }
+//</editor-fold>
 
     @Override
     public void keyPressedHandler(KeyEvent e) {
@@ -172,12 +270,45 @@ class Space extends Environment {
             hub.draw(graphics);
         }
 
-        if (asteriods != null) {
-            for (Asteroid asteroid : asteriods) {
+        if (fullAsteriods != null) {
+            for (FullAsteroid asteroid : fullAsteriods) {
                 asteroid.draw(graphics);
             }
         }
-
+        //<editor-fold defaultstate="collapsed" desc="Half Asteroids">
+        if (leftHalfAsteroids != null) {
+            for (LeftHalfAsteroid asteroid : leftHalfAsteroids) {
+                asteroid.draw(graphics);
+            }
+        }
+        if (rightHalfAsteroids != null) {
+            for (RightHalfAsteroid asteroid : rightHalfAsteroids) {
+                asteroid.draw(graphics);
+            }
+//</editor-fold>
+            
+        //<editor-fold defaultstate="collapsed" desc="Quater Asteroids">
+            if (leftQuaterTopAsteroids != null) {
+                for (LeftQuaterTopAsteroid asteroid : leftQuaterTopAsteroids) {
+                    asteroid.draw(graphics);
+                }
+            }
+            if (rightQuaterTopAsteroids != null) {
+                for (RightQuaterTopAsteroid asteroid : rightQuaterTopAsteroids) {
+                    asteroid.draw(graphics);
+                    
+                }
+                if (leftQuaterBottomAsteroids != null) {
+                    for (LeftQuaterBottomAsteroid asteroid : leftQuaterBottomAsteroids) {
+                        asteroid.draw(graphics);
+                    }
+                }
+                if (rightQuaterBottomAsteroids != null) {
+                    for (RightQuaterBottomAsteroid asteroid : rightQuaterBottomAsteroids) {
+                        asteroid.draw(graphics);
+                        
+                    }
+//</editor-fold>
         if (lasers != null) {
             for (Laser lazer : lasers) {
                 if (lazer.isAlive()) {
@@ -188,6 +319,9 @@ class Space extends Environment {
 
         if (ship != null) {
             ship.draw(graphics);
+        }
+                }
+            }
         }
     }
 }

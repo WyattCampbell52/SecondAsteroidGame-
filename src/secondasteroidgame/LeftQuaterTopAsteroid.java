@@ -9,6 +9,7 @@ import environment.Velocity;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
+import java.awt.Rectangle;
 import java.awt.geom.AffineTransform;
 import path.TrigonometryCalculator;
 
@@ -16,8 +17,8 @@ import path.TrigonometryCalculator;
  *
  * @author WyattCampbell
  */
-public class Asteroid {
-    public Asteroid(Image image, int x, int y, Velocity velocity, int angularVelocity, int angle) {
+public class LeftQuaterTopAsteroid {
+    public LeftQuaterTopAsteroid(Image image, int x, int y, Velocity velocity, int angularVelocity, int angle) {
         this.image = image;
         this.x = x;
         this.y = y;
@@ -37,6 +38,9 @@ public class Asteroid {
         g2d.setTransform(at);
         g2d.drawImage(image, x, y, null);
             }
+    public Rectangle getBounds() {
+		return new Rectangle(x, y, image.getWidth(null), image.getHeight(null));
+	}
 
 //<editor-fold defaultstate="collapsed" desc="Properties">
     private int x;
@@ -174,12 +178,12 @@ public class Asteroid {
         setSpeed(speed - velocityChange);
     }
 
-    void move() {
+    public void move() {
         x -= velocity.x;
         y -= velocity.y;
 
     }
-    void boundries(){
+    public void boundries(){
         if (x > 875) {
             x = -100;
         } else if (x < -100) {
