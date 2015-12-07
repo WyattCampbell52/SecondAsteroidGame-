@@ -14,7 +14,8 @@ import java.awt.Graphics;
  * @author WyattCampbell
  */
 public class Hub {
-    private String score;
+    public String score;
+    public int level;
     private int x;
     private int y;
         public Hub(String score, int x, int y) {
@@ -27,6 +28,9 @@ public class Hub {
             
             graphics.setFont(new Font("Calibri", Font.BOLD, 36));
             graphics.drawString(score, x, y);
+        }
+        public void score(){
+                    score = "Score " + level;
         }
 
     

@@ -17,8 +17,8 @@ import path.TrigonometryCalculator;
  *
  * @author WyattCampbell
  */
-public class LeftQuaterTopAsteroid {
-    public LeftQuaterTopAsteroid(Image image, int x, int y, Velocity velocity, int angularVelocity, int angle) {
+public class Asteroid {
+    public Asteroid(Image image, int x, int y, Velocity velocity, int angularVelocity, int angle) {
         this.image = image;
         this.x = x;
         this.y = y;
@@ -178,12 +178,12 @@ public class LeftQuaterTopAsteroid {
         setSpeed(speed - velocityChange);
     }
 
-    public void move() {
+    void move() {
         x -= velocity.x;
         y -= velocity.y;
 
     }
-    public void boundries(){
+    void boundries(){
         if (x > 875) {
             x = -100;
         } else if (x < -100) {
@@ -262,6 +262,7 @@ public class LeftQuaterTopAsteroid {
     public int getRotationSpeed() {
         return rotationSpeed;
     }
+    
 
     /**
      * @param rotationSpeed the rotationSpeed to set
