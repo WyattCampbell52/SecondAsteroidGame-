@@ -19,13 +19,16 @@ import path.TrigonometryCalculator;
  */
 public class Ship {
 
-    public Ship(Image image, int x, int y, Velocity velocity, int angularVelocity, int angle) {
+    public Ship(Image image, int x, int y, Velocity velocity, int angularVelocity, int angle, String name) {
         this.image = image;
         this.x = x;
         this.y = y;
         this.velocity = velocity;
         this.angularVelocity = angularVelocity;
         this.angle = angle;
+        if (name == "American") {
+            object = "Asteroid";
+        }
     }
 
     public void draw(Graphics graphics) {
@@ -43,6 +46,7 @@ public class Ship {
     }
 
 //<editor-fold defaultstate="collapsed" desc="Properties">
+    private String object;
     private int x;
     private int y;
     private int maxX;
@@ -269,5 +273,19 @@ public class Ship {
         this.rotationSpeed = rotationSpeed;
     }
         //</editor-fold>
+
+    /**
+     * @return the object
+     */
+    public String getObject() {
+        return object;
+    }
+
+    /**
+     * @param object the object to set
+     */
+    public void setObject(String object) {
+        this.object = object;
+    }
 
 }

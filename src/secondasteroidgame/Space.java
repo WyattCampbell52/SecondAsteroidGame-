@@ -15,6 +15,7 @@ import java.awt.Image;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
+import javax.swing.JOptionPane;
 import path.TrigonometryCalculator;
 
 /**
@@ -42,6 +43,14 @@ class Space extends Environment {
 //</editor-fold>
     Hub hub;
     int points;
+    
+    String object;
+    String rightHalfObject;
+    String leftHalfObject;
+    String rightQuaterTopObject;
+    String leftQuaterTopOject;
+    String leftQuaterBottomObject;
+    String rightQuaterBottomObject;
     String name;
     String score;
 
@@ -58,21 +67,22 @@ class Space extends Environment {
 
     public Space() {
         this.setBackground(background);
-        name = "American";
-//        name = JOptionPane.showInputDialog("What Ship? American, Soviet, Trump, or Campbell");
-
-        fullAsteroid = ResourceTools.loadImageFromResource("SecondAsteroidGame/Full Asteroid.png");
-        leftHalfAsteroid = ResourceTools.loadImageFromResource("SecondAsteroidGame/Asteroid Left Half.png");
-        rightHalfAsteroid = ResourceTools.loadImageFromResource("SecondAsteroidGame/Asteroid Right Half.png");
-        leftQuaterTopAsteroid = ResourceTools.loadImageFromResource("SecondAsteroidGame/Asteroid Left Half.png");
-        leftQuaterBottomAsteroid = ResourceTools.loadImageFromResource("SecondAsteroidGame/Asteroid Left Second Half.png");
-        rightQuaterTopAsteroid = ResourceTools.loadImageFromResource("SecondAsteroidGame/Asteroid Right Half.png");
-        rightQuaterBottomAsteroid = ResourceTools.loadImageFromResource("SecondAsteroidGame/Asteroid Right Second Half.png");
-
+//        name = "American";
+        name = JOptionPane.showInputDialog("What Ship? American, Soviet, Trump, or Campbell");
+        System.out.println(name);
+        object = "Asteroid";
+        
+        fullAsteroid = ResourceTools.loadImageFromResource("SecondAsteroidGame/Full Mexican.png");
+        leftHalfAsteroid = ResourceTools.loadImageFromResource("SecondAsteroidGame/" + object + " Left Half.png");
+        rightHalfAsteroid = ResourceTools.loadImageFromResource("SecondAsteroidGame/" + object + " Right Half.png");
+        leftQuaterTopAsteroid = ResourceTools.loadImageFromResource("SecondAsteroidGame/" + object +" Left Half.png");
+        leftQuaterBottomAsteroid = ResourceTools.loadImageFromResource("SecondAsteroidGame/" + object + " Left Second Half.png");
+        rightQuaterTopAsteroid = ResourceTools.loadImageFromResource("SecondAsteroidGame/" + object + " Right Half.png");
+        rightQuaterBottomAsteroid = ResourceTools.loadImageFromResource("SecondAsteroidGame/" + object + " Right Second Half.png");
         shipChoice = ResourceTools.loadImageFromResource("SecondAsteroidGame/" + name + " Ship.png");
         lazerImage = ResourceTools.loadImageFromResource("SecondAsteroidGame/Lazer.png");
         background = ResourceTools.loadImageFromResource("SecondAsteroidGame/Galaxy 1.jpg");
-        ship = new Ship(shipChoice, 400, 300, new Velocity(0, 0), 0, 0);
+        ship = new Ship(shipChoice, 400, 300, new Velocity(0, 0), 0, 0, name);
         this.setBackground(background);
 
         //        <editor-fold defaultstate="collapsed" desc="Asteroids American">
@@ -91,60 +101,8 @@ class Space extends Environment {
         rightQuaterTopAsteroids = new ArrayList<>();
 
         rightQuaterBottomAsteroids = new ArrayList<>();
-//</editor-fold>
-
-        //<editor-fold defaultstate="collapsed" desc="Asteroids Soviet">
-        fullAsteroids = new ArrayList<>();
-        fullAsteroids.add(new Asteroid(fullAsteroid, 100, 200, TrigonometryCalculator.getVelocity(Math.toRadians(45), 7), 0, 0));
-        fullAsteroids.add(new Asteroid(fullAsteroid, 100, 200, TrigonometryCalculator.getVelocity(Math.toRadians(135), 4), 0, 0));
-
-        leftHalfAsteroids = new ArrayList<>();
-
-        rightHalfAsteroids = new ArrayList<>();
-
-        leftQuaterTopAsteroids = new ArrayList<>();
-
-        leftQuaterBottomAsteroids = new ArrayList<>();
-
-        rightQuaterTopAsteroids = new ArrayList<>();
-
-        rightQuaterBottomAsteroids = new ArrayList<>();
-//</editor-fold>
-
-        //<editor-fold defaultstate="collapsed" desc="Asteroids Trump">
-        fullAsteroids = new ArrayList<>();
-        fullAsteroids.add(new Asteroid(fullAsteroid, 100, 200, TrigonometryCalculator.getVelocity(Math.toRadians(45), 7), 0, 0));
-        fullAsteroids.add(new Asteroid(fullAsteroid, 100, 200, TrigonometryCalculator.getVelocity(Math.toRadians(135), 4), 0, 0));
-
-        leftHalfAsteroids = new ArrayList<>();
-
-        rightHalfAsteroids = new ArrayList<>();
-
-        leftQuaterTopAsteroids = new ArrayList<>();
-
-        leftQuaterBottomAsteroids = new ArrayList<>();
-
-        rightQuaterTopAsteroids = new ArrayList<>();
-
-        rightQuaterBottomAsteroids = new ArrayList<>();
-//</editor-fold>
-
-        //<editor-fold defaultstate="collapsed" desc="Asteroids Campbell">
-        fullAsteroids = new ArrayList<>();
-        fullAsteroids.add(new Asteroid(fullAsteroid, 100, 200, TrigonometryCalculator.getVelocity(Math.toRadians(45), 7), 0, 0));
-        fullAsteroids.add(new Asteroid(fullAsteroid, 100, 200, TrigonometryCalculator.getVelocity(Math.toRadians(135), 4), 0, 0));
-
-        leftHalfAsteroids = new ArrayList<>();
-
-        rightHalfAsteroids = new ArrayList<>();
-
-        leftQuaterTopAsteroids = new ArrayList<>();
-
-        leftQuaterBottomAsteroids = new ArrayList<>();
-
-        rightQuaterTopAsteroids = new ArrayList<>();
-
-        rightQuaterBottomAsteroids = new ArrayList<>();
+            
+        
 //</editor-fold>
 
         //<editor-fold defaultstate="collapsed" desc="Laser">
@@ -253,7 +211,6 @@ class Space extends Environment {
         if (fullAsteroids != null) {
             ArrayList<Laser> toLaserRemoves = new ArrayList<>();
             ArrayList<Asteroid> toAsteroidRemoves = new ArrayList<>();
-            ArrayList<Asteroid> toAsteroidHalfRemoves = new ArrayList<>();
 
             for (Laser laser : lasers) {
                 for (Asteroid asteroid : fullAsteroids) {
@@ -262,7 +219,7 @@ class Space extends Environment {
                         toAsteroidRemoves.add(asteroid);
                         toLaserRemoves.add(laser);
                         System.out.println("Dead");
-                        leftHalfAsteroids.add(new Asteroid(leftHalfAsteroid, asteroid.getX() + 1, asteroid.getY(), new Velocity(- asteroid.getVelocity().x, WIDTH), asteroid.getAngularVelocity(), asteroid.getAngle()));
+                        leftHalfAsteroids.add(new Asteroid(leftHalfAsteroid, asteroid.getX() + 1, asteroid.getY(), new Velocity(- asteroid.getVelocity().x, -asteroid.getVelocity().y), asteroid.getAngularVelocity(), asteroid.getAngle()));
                         rightHalfAsteroids.add(new Asteroid(rightHalfAsteroid, asteroid.getX() - 10, asteroid.getY(), asteroid.getVelocity(), asteroid.getAngularVelocity(), asteroid.getAngle()));
                         points = (points + 10);
                     }
@@ -270,7 +227,7 @@ class Space extends Environment {
                 for (Asteroid asteroid : leftHalfAsteroids) {
                     if (laser.getY() == asteroid.getY()) {
                         toLaserRemoves.add(laser);
-                        toAsteroidHalfRemoves.add(asteroid);
+                        toAsteroidRemoves.add(asteroid);
                         System.out.println("Dead 2");
                         leftQuaterTopAsteroids.add(new Asteroid(leftQuaterTopAsteroid, asteroid.getX() - 20, asteroid.getY(), asteroid.getVelocity(), asteroid.getAngularVelocity(), asteroid.getAngle()));
                         leftQuaterBottomAsteroids.add(new Asteroid(leftQuaterBottomAsteroid, asteroid.getX() + 20, asteroid.getY() - 10, asteroid.getVelocity(), asteroid.getAngularVelocity(), asteroid.getAngle()));
@@ -280,17 +237,54 @@ class Space extends Environment {
                 for (Asteroid asteroid : rightHalfAsteroids) {
                     if (laser.getY() == asteroid.getY()) {
                         toLaserRemoves.add(laser);
-                        toAsteroidHalfRemoves.add(asteroid);
+                        toAsteroidRemoves.add(asteroid);
                         System.out.println("Dead 2");
                         rightQuaterTopAsteroids.add(new Asteroid(rightQuaterTopAsteroid, asteroid.getX() + 10, asteroid.getY() + 10, asteroid.getVelocity(), asteroid.getAngularVelocity(), asteroid.getAngle()));
                         rightQuaterBottomAsteroids.add(new Asteroid(rightQuaterBottomAsteroid, asteroid.getX() - 10, asteroid.getY(), asteroid.getVelocity(), asteroid.getAngularVelocity(), asteroid.getAngle()));
                         points = (points + 15);
                     }
             }
+                for (Asteroid asteroid : rightQuaterTopAsteroids) {
+                    if (laser.getY() == asteroid.getY()) {
+                        toLaserRemoves.add(laser);
+                        toAsteroidRemoves.add(asteroid);
+                        System.out.println("Dead 3");
+                        points = (points + 20);
+                    }
             }
+                for (Asteroid asteroid : rightQuaterBottomAsteroids) {
+                    if (laser.getY() == asteroid.getY()) {
+                        toLaserRemoves.add(laser);
+                        toAsteroidRemoves.add(asteroid);
+                        System.out.println("Dead 3");
+                        points = (points + 20);
+                    }
+                }
+                for (Asteroid asteroid : leftQuaterTopAsteroids) {
+                    if (laser.getY() == asteroid.getY()) {
+                        toLaserRemoves.add(laser);
+                        toAsteroidRemoves.add(asteroid);
+                        System.out.println("Dead 3");
+                        points = (points + 20);
+                    }
+                }
+                    for (Asteroid asteroid : leftQuaterBottomAsteroids) {
+                    if (laser.getY() == asteroid.getY()) {
+                        toLaserRemoves.add(laser);
+                        toAsteroidRemoves.add(asteroid);
+                        System.out.println("Dead 3");
+                        points = (points + 20);
+                    }
+                    }
+            }
+            
             fullAsteroids.removeAll(toAsteroidRemoves);
-            leftQuaterTopAsteroids.removeAll(toAsteroidHalfRemoves);
-            leftQuaterBottomAsteroids.removeAll(toAsteroidHalfRemoves);
+            leftHalfAsteroids.removeAll(toAsteroidRemoves);
+            rightHalfAsteroids.removeAll(toAsteroidRemoves);
+            leftQuaterTopAsteroids.removeAll(toAsteroidRemoves);
+            leftQuaterBottomAsteroids.removeAll(toAsteroidRemoves);
+            rightQuaterTopAsteroids.removeAll(toAsteroidRemoves);
+            rightQuaterBottomAsteroids.removeAll(toAsteroidRemoves);
         }
     }
 //</editor-fold>
