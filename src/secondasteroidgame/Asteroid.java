@@ -18,6 +18,7 @@ import path.TrigonometryCalculator;
  * @author WyattCampbell
  */
 public class Asteroid {
+
     public Asteroid(Image image, int x, int y, Velocity velocity, int angularVelocity, int angle) {
         this.image = image;
         this.x = x;
@@ -25,22 +26,22 @@ public class Asteroid {
         this.velocity = velocity;
         this.angularVelocity = angularVelocity;
         this.angle = angle;
-        
+
     }
-    
-    
+
     public void draw(Graphics graphics) {
         Graphics2D g2d = (Graphics2D) graphics;
         AffineTransform olde = g2d.getTransform();
-        
+
         AffineTransform at = AffineTransform.getRotateInstance(Math.toRadians(angle));
         at.setToRotation(getAngleInRadians(), x + (image.getWidth(null) / 2), y + (image.getHeight(null) / 2));
         g2d.setTransform(at);
         g2d.drawImage(image, x, y, null);
-            }
+    }
+
     public Rectangle getBounds() {
-		return new Rectangle(x, y, image.getWidth(null), image.getHeight(null));
-	}
+        return new Rectangle(x, y, image.getWidth(null), image.getHeight(null));
+    }
 
 //<editor-fold defaultstate="collapsed" desc="Properties">
     private int x;
@@ -110,7 +111,7 @@ public class Asteroid {
      */
     public void setSpeed(int speed) {
         this.speed = speed;
-        
+
         velocity = TrigonometryCalculator.getVelocity(Math.toRadians((angle + 90) % 360), speed);
     }
 
@@ -174,7 +175,8 @@ public class Asteroid {
     void accelerate(int velocityChange) {
         setSpeed(speed + velocityChange);
     }
-    void decelarate(int velocityChange){
+
+    void decelarate(int velocityChange) {
         setSpeed(speed - velocityChange);
     }
 
@@ -183,7 +185,8 @@ public class Asteroid {
         y -= velocity.y;
 
     }
-    void boundries(){
+
+    void boundries() {
         if (x > 875) {
             x = -100;
         } else if (x < -100) {
@@ -194,7 +197,7 @@ public class Asteroid {
         } else if (y < -75) {
             y = 575;
         }
-        
+
     }
 
     /**
@@ -253,16 +256,16 @@ public class Asteroid {
      * @param minY the minY to set
      */
     public void setMinY(int minY) {
-        minY = -100; 
+        minY = -100;
         this.minY = minY;
     }
+
     /**
      * @return the rotationSpeed
      */
     public int getRotationSpeed() {
         return rotationSpeed;
     }
-    
 
     /**
      * @param rotationSpeed the rotationSpeed to set
@@ -273,8 +276,4 @@ public class Asteroid {
     }
         //</editor-fold>
 
-
-
 }
-
-

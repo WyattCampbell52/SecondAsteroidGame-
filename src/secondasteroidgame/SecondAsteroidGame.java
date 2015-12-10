@@ -17,8 +17,8 @@ public class SecondAsteroidGame {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-  // TODO code application logic here
+        // TODO code application logic here
         ApplicationStarter.run("Spaceteroids!", new Space());//, Reso)
     }
-    
-}   
+
+}

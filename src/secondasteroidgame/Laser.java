@@ -26,7 +26,7 @@ public class Laser {
         this.velocity = velocity;
         this.angularVelocity = angularVelocity;
         this.angle = angle;
-        
+
         this.startTime = System.currentTimeMillis();
     }
 
@@ -38,30 +38,31 @@ public class Laser {
         at.setToRotation(getAngleInRadians(), x + (image.getWidth(null) / 2), y + (image.getHeight(null) / 2));
         g2d.setTransform(at);
         g2d.drawImage(image, x, y, null);
-        
+
     }
+
     public Rectangle getBounds() {
-		return new Rectangle(x, y, image.getWidth(null), image.getHeight(null));
-	}
+        return new Rectangle(x, y, image.getWidth(null), image.getHeight(null));
+    }
 
 //<editor-fold defaultstate="collapsed" desc="Properties">    
     private int x;
     private int y;
-    
+
     private int maxX;
     private int minX;
     private int maxY;
     private int minY;
-    
+
     private Velocity velocity;
     private int speed;
-    
+
     private int angularVelocity;
     private int angle;
     private int rotationSpeed = 5;
-    
+
     private Image image;
-    
+
     private long startTime;
     private long maxDurationMillis = 1000;
     private boolean alive = true;
@@ -180,14 +181,15 @@ public class Laser {
     void accelerate(int velocityChange) {
         setSpeed(speed + 10);
     }
+
     void move() {
         x -= velocity.x;
         y -= velocity.y;
-        
+
         checkLifeTime();
     }
-    
-    public boolean checkLifeTime(){
+
+    public boolean checkLifeTime() {
         alive = ((System.currentTimeMillis() - startTime) < this.maxDurationMillis);
         return alive;
     }

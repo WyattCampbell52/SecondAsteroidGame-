@@ -5,6 +5,7 @@
  */
 package secondasteroidgame;
 
+import audio.AudioPlayer;
 import environment.Environment;
 import environment.Velocity;
 import images.ResourceTools;
@@ -43,7 +44,7 @@ class Space extends Environment {
 //</editor-fold>
     Hub hub;
     int points;
-    
+
     String object;
     String rightHalfObject;
     String leftHalfObject;
@@ -66,29 +67,34 @@ class Space extends Environment {
     Image rightQuaterBottomAsteroid;
 
     public Space() {
-        this.setBackground(background);
 //        name = "American";
         name = JOptionPane.showInputDialog("What Ship? American, Soviet, Trump, or Campbell");
         System.out.println(name);
-        object = "Asteroid";
+        if (name.equals("American")) {
+            object = "Asteroid";
+            lazerImage = ResourceTools.loadImageFromResource("SecondAsteroidGame/Lazer.png");
+            background = ResourceTools.loadImageFromResource("SecondAsteroidGame/Galaxy_1.jpg");
+        } else if (name.equals("Trump")) {
+            object = "Mexican";
+            background = ResourceTools.loadImageFromResource("SecondAsteroidGame/Us_Mexico_Border.jpg");
+            lazerImage = ResourceTools.loadImageFromResource("SecondAsteroidGame/Eagle.png");
+        }
         
-        fullAsteroid = ResourceTools.loadImageFromResource("SecondAsteroidGame/Full Mexican.png");
-        leftHalfAsteroid = ResourceTools.loadImageFromResource("SecondAsteroidGame/" + object + " Left Half.png");
-        rightHalfAsteroid = ResourceTools.loadImageFromResource("SecondAsteroidGame/" + object + " Right Half.png");
-        leftQuaterTopAsteroid = ResourceTools.loadImageFromResource("SecondAsteroidGame/" + object +" Left Half.png");
-        leftQuaterBottomAsteroid = ResourceTools.loadImageFromResource("SecondAsteroidGame/" + object + " Left Second Half.png");
-        rightQuaterTopAsteroid = ResourceTools.loadImageFromResource("SecondAsteroidGame/" + object + " Right Half.png");
-        rightQuaterBottomAsteroid = ResourceTools.loadImageFromResource("SecondAsteroidGame/" + object + " Right Second Half.png");
-        shipChoice = ResourceTools.loadImageFromResource("SecondAsteroidGame/" + name + " Ship.png");
-        lazerImage = ResourceTools.loadImageFromResource("SecondAsteroidGame/Lazer.png");
-        background = ResourceTools.loadImageFromResource("SecondAsteroidGame/Galaxy 1.jpg");
+
+        fullAsteroid = ResourceTools.loadImageFromResource("SecondAsteroidGame/Full_" + object + ".png");
+        leftHalfAsteroid = ResourceTools.loadImageFromResource("SecondAsteroidGame/" + object + "_Left_Half.png");
+        rightHalfAsteroid = ResourceTools.loadImageFromResource("SecondAsteroidGame/" + object + "_Right_Half.png");
+        leftQuaterTopAsteroid = ResourceTools.loadImageFromResource("SecondAsteroidGame/" + object + "_Left_First_Half.png");
+        leftQuaterBottomAsteroid = ResourceTools.loadImageFromResource("SecondAsteroidGame/" + object + "_Left_Second_Half.png");
+        rightQuaterTopAsteroid = ResourceTools.loadImageFromResource("SecondAsteroidGame/" + object + "_Right_First_Half.png");
+        rightQuaterBottomAsteroid = ResourceTools.loadImageFromResource("SecondAsteroidGame/" + object + "_Right_Second_Half.png");
+        shipChoice = ResourceTools.loadImageFromResource("SecondAsteroidGame/" + name + "_Ship.png");
         ship = new Ship(shipChoice, 400, 300, new Velocity(0, 0), 0, 0, name);
         this.setBackground(background);
 
         //        <editor-fold defaultstate="collapsed" desc="Asteroids American">
         fullAsteroids = new ArrayList<>();
         fullAsteroids.add(new Asteroid(fullAsteroid, 100, 200, TrigonometryCalculator.getVelocity(Math.toRadians(45), 7), 0, 0));
-        fullAsteroids.add(new Asteroid(fullAsteroid, 100, 200, TrigonometryCalculator.getVelocity(Math.toRadians(135), 4), 0, 0));
 
         leftHalfAsteroids = new ArrayList<>();
 
@@ -101,10 +107,8 @@ class Space extends Environment {
         rightQuaterTopAsteroids = new ArrayList<>();
 
         rightQuaterBottomAsteroids = new ArrayList<>();
-            
-        
-//</editor-fold>
 
+//</editor-fold>
         //<editor-fold defaultstate="collapsed" desc="Laser">
         lasers = new ArrayList<>();
 //     
@@ -216,68 +220,78 @@ class Space extends Environment {
                 for (Asteroid asteroid : fullAsteroids) {
 //                    if (laser.getX() == asteroid.getX()) {
                     if (laser.getY() == asteroid.getY() - 5) {
+                        AudioPlayer.play("/secondasteroidgame/Bomb");                        
                         toAsteroidRemoves.add(asteroid);
                         toLaserRemoves.add(laser);
                         System.out.println("Dead");
-                        leftHalfAsteroids.add(new Asteroid(leftHalfAsteroid, asteroid.getX() + 1, asteroid.getY(), new Velocity(- asteroid.getVelocity().x, -asteroid.getVelocity().y), asteroid.getAngularVelocity(), asteroid.getAngle()));
-                        rightHalfAsteroids.add(new Asteroid(rightHalfAsteroid, asteroid.getX() - 10, asteroid.getY(), asteroid.getVelocity(), asteroid.getAngularVelocity(), asteroid.getAngle()));
+                        leftHalfAsteroids.add(new Asteroid(leftHalfAsteroid, asteroid.getX() + 1, asteroid.getY(), new Velocity(-asteroid.getVelocity().x, -asteroid.getVelocity().y), asteroid.getAngularVelocity(), asteroid.getAngle()));
+                        rightHalfAsteroids.add(new Asteroid(rightHalfAsteroid, asteroid.getX() - 5, asteroid.getY(), new Velocity(+asteroid.getVelocity().x, +asteroid.getVelocity().y), asteroid.getAngularVelocity(), asteroid.getAngle()));
                         points = (points + 10);
                     }
                 }
                 for (Asteroid asteroid : leftHalfAsteroids) {
                     if (laser.getY() == asteroid.getY()) {
+                        AudioPlayer.play("/secondasteroidgame/Bomb");                        
                         toLaserRemoves.add(laser);
                         toAsteroidRemoves.add(asteroid);
                         System.out.println("Dead 2");
-                        leftQuaterTopAsteroids.add(new Asteroid(leftQuaterTopAsteroid, asteroid.getX() - 20, asteroid.getY(), asteroid.getVelocity(), asteroid.getAngularVelocity(), asteroid.getAngle()));
-                        leftQuaterBottomAsteroids.add(new Asteroid(leftQuaterBottomAsteroid, asteroid.getX() + 20, asteroid.getY() - 10, asteroid.getVelocity(), asteroid.getAngularVelocity(), asteroid.getAngle()));
+                        leftQuaterTopAsteroids.add(new Asteroid(leftQuaterTopAsteroid, asteroid.getX() - 5, asteroid.getY(), new Velocity(asteroid.getVelocity().x +5, asteroid.getVelocity().y-5), asteroid.getAngularVelocity(), asteroid.getAngle()));
+                        leftQuaterBottomAsteroids.add(new Asteroid(leftQuaterBottomAsteroid, asteroid.getX() + 5, asteroid.getY() - 5, new Velocity(asteroid.getVelocity().x + 5, asteroid.getVelocity().y +5), asteroid.getAngularVelocity(), asteroid.getAngle()));
                         points = (points + 15);
                     }
                 }
                 for (Asteroid asteroid : rightHalfAsteroids) {
                     if (laser.getY() == asteroid.getY()) {
+                        AudioPlayer.play("/secondasteroidgame/Bomb");                        
                         toLaserRemoves.add(laser);
                         toAsteroidRemoves.add(asteroid);
                         System.out.println("Dead 2");
-                        rightQuaterTopAsteroids.add(new Asteroid(rightQuaterTopAsteroid, asteroid.getX() + 10, asteroid.getY() + 10, asteroid.getVelocity(), asteroid.getAngularVelocity(), asteroid.getAngle()));
-                        rightQuaterBottomAsteroids.add(new Asteroid(rightQuaterBottomAsteroid, asteroid.getX() - 10, asteroid.getY(), asteroid.getVelocity(), asteroid.getAngularVelocity(), asteroid.getAngle()));
+                        rightQuaterTopAsteroids.add(new Asteroid(rightQuaterTopAsteroid, asteroid.getX() + 5, asteroid.getY() + 5, new Velocity(asteroid.getVelocity().x + 5, -asteroid.getVelocity().y), asteroid.getAngularVelocity(), asteroid.getAngle()));
+                        rightQuaterBottomAsteroids.add(new Asteroid(rightQuaterBottomAsteroid, asteroid.getX() - 5, asteroid.getY(), new Velocity(-asteroid.getVelocity().x, -asteroid.getVelocity().y + 5), asteroid.getAngularVelocity(), asteroid.getAngle()));
                         points = (points + 15);
                     }
-            }
+                }
                 for (Asteroid asteroid : rightQuaterTopAsteroids) {
                     if (laser.getY() == asteroid.getY()) {
+                        AudioPlayer.play("/secondasteroidgame/Bomb");                        
                         toLaserRemoves.add(laser);
                         toAsteroidRemoves.add(asteroid);
                         System.out.println("Dead 3");
                         points = (points + 20);
                     }
-            }
+                }
                 for (Asteroid asteroid : rightQuaterBottomAsteroids) {
                     if (laser.getY() == asteroid.getY()) {
+                        AudioPlayer.play("/secondasteroidgame/Bomb");                       
                         toLaserRemoves.add(laser);
                         toAsteroidRemoves.add(asteroid);
+                        fullAsteroids.add(new Asteroid(fullAsteroid, 0, 0, asteroid.getVelocity(), asteroid.getAngularVelocity(), asteroid.getAngle()));
                         System.out.println("Dead 3");
                         points = (points + 20);
                     }
                 }
                 for (Asteroid asteroid : leftQuaterTopAsteroids) {
                     if (laser.getY() == asteroid.getY()) {
+                        AudioPlayer.play("/secondasteroidgame/Bomb");
                         toLaserRemoves.add(laser);
                         toAsteroidRemoves.add(asteroid);
                         System.out.println("Dead 3");
                         points = (points + 20);
                     }
                 }
-                    for (Asteroid asteroid : leftQuaterBottomAsteroids) {
+                for (Asteroid asteroid : leftQuaterBottomAsteroids) {
                     if (laser.getY() == asteroid.getY()) {
+                        AudioPlayer.play("/secondasteroidgame/Bomb");
                         toLaserRemoves.add(laser);
                         toAsteroidRemoves.add(asteroid);
+                        fullAsteroids.add(new Asteroid(fullAsteroid, 0, 0, asteroid.getVelocity(), asteroid.getAngularVelocity(), asteroid.getAngle()));
                         System.out.println("Dead 3");
                         points = (points + 20);
                     }
-                    }
+                }
             }
             
+            lasers.removeAll(toLaserRemoves);
             fullAsteroids.removeAll(toAsteroidRemoves);
             leftHalfAsteroids.removeAll(toAsteroidRemoves);
             rightHalfAsteroids.removeAll(toAsteroidRemoves);
@@ -307,12 +321,19 @@ class Space extends Environment {
             ship.decelarate(2);
             System.out.println(ship.getSpeed());
         } else if (e.getKeyCode() == KeyEvent.VK_SPACE) {
-            lasers.add(new Laser(lazerImage, ship.getX(), ship.getY(), TrigonometryCalculator.getVelocity(Math.toRadians(ship.getAngle() + 90), ship.getSpeed() + 7), 0, ship.getAngle()));
+            if (name.equals("American")) {
+            AudioPlayer.play("/secondasteroidgame/shooting");
+            }else if (name.equals("Trump")) {
+            AudioPlayer.play("/secondasteroidgame/trump");
+            }
+            lasers.add(new Laser(lazerImage, ship.getX(), ship.getY(), TrigonometryCalculator.getVelocity(Math.toRadians(ship.getAngle() + 90), ship.getSpeed() + 7), 0, ship.getAngle() + 90));
         }
     }
 
     @Override
     public void keyReleasedHandler(KeyEvent e) {
+        if (e.getExtendedKeyCode() == KeyEvent.VK_SPACE) {
+        }
     }
 
     @Override
@@ -374,6 +395,7 @@ class Space extends Environment {
                 }
             }
         }
+        
 
         if (ship != null) {
             ship.draw(graphics);

@@ -12,7 +12,8 @@ import java.awt.Point;
  * @author WyattCampbell
  */
 public class MoveValidatorIntf {
-    public Point vakidateMove(Point propsedLocation){
+
+    public Point vakidateMove(Point propsedLocation) {
         return propsedLocation;
     }
 }

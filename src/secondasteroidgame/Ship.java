@@ -272,7 +272,7 @@ public class Ship {
     public void setRotationSpeed(int rotationSpeed) {
         this.rotationSpeed = rotationSpeed;
     }
-        //</editor-fold>
+    //</editor-fold>
 
     /**
      * @return the object
