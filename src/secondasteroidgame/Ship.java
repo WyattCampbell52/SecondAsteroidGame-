@@ -10,6 +10,7 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
+import java.awt.Rectangle;
 import java.awt.geom.AffineTransform;
 import path.TrigonometryCalculator;
 
@@ -26,9 +27,6 @@ public class Ship {
         this.velocity = velocity;
         this.angularVelocity = angularVelocity;
         this.angle = angle;
-        if (name == "American") {
-            object = "Asteroid";
-        }
     }
 
     public void draw(Graphics graphics) {
@@ -43,7 +41,10 @@ public class Ship {
 
         g2d.setTransform(olde);
         g2d.dispose();
+        
     }
+    
+    
 
 //<editor-fold defaultstate="collapsed" desc="Properties">
     private String object;
@@ -287,5 +288,6 @@ public class Ship {
     public void setObject(String object) {
         this.object = object;
     }
+    
 
 }

@@ -13,6 +13,7 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Image;
+import java.awt.Rectangle;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
@@ -25,8 +26,10 @@ import path.TrigonometryCalculator;
  */
 class Space extends Environment {
 
+    //<editor-fold defaultstate="collapsed" desc="Properties">
     Ship ship;
-
+    Asteroid asteroid;
+    
     //<editor-fold defaultstate="collapsed" desc="ArrayLists">
     private ArrayList<Asteroid> fullAsteroids;
     private ArrayList<Asteroid> leftHalfAsteroids;
@@ -36,15 +39,17 @@ class Space extends Environment {
     private ArrayList<Asteroid> rightQuaterTopAsteroids;
     private ArrayList<Asteroid> rightQuaterBottomAsteroids;
     private ArrayList<Laser> lasers;
-
+    private ArrayList<PowerUps> powerUps;
+    
     private ArrayList<Laser> getLasersCopy() {
         return new ArrayList<>(lasers);
     }
-
+    
 //</editor-fold>
+    
     Hub hub;
     int points;
-
+    
     String object;
     String rightHalfObject;
     String leftHalfObject;
@@ -54,7 +59,7 @@ class Space extends Environment {
     String rightQuaterBottomObject;
     String name;
     String score;
-
+    
     Image shipChoice;
     Image lazerImage;
     Image background;
@@ -65,6 +70,9 @@ class Space extends Environment {
     Image leftQuaterBottomAsteroid;
     Image rightQuaterTopAsteroid;
     Image rightQuaterBottomAsteroid;
+    
+    Rectangle intersection;
+//</editor-fold>
 
     public Space() {
 //        name = "American";
@@ -74,7 +82,15 @@ class Space extends Environment {
             object = "Asteroid";
             lazerImage = ResourceTools.loadImageFromResource("SecondAsteroidGame/Lazer.png");
             background = ResourceTools.loadImageFromResource("SecondAsteroidGame/Galaxy_1.jpg");
-        } else if (name.equals("Trump")) {
+        } if (name.equals("Soviet")) {
+            object = "Asteroid";
+            lazerImage = ResourceTools.loadImageFromResource("SecondAsteroidGame/Lazer.png");
+            background = ResourceTools.loadImageFromResource("SecondAsteroidGame/Galaxy_1.jpg");
+        }else if (name.equals("Trump")) {
+            object = "Mexican";
+            background = ResourceTools.loadImageFromResource("SecondAsteroidGame/Us_Mexico_Border.jpg");
+            lazerImage = ResourceTools.loadImageFromResource("SecondAsteroidGame/Eagle.png");
+        }else if (name.equals("Trump_Face")) {
             object = "Mexican";
             background = ResourceTools.loadImageFromResource("SecondAsteroidGame/Us_Mexico_Border.jpg");
             lazerImage = ResourceTools.loadImageFromResource("SecondAsteroidGame/Eagle.png");
@@ -109,8 +125,11 @@ class Space extends Environment {
         rightQuaterBottomAsteroids = new ArrayList<>();
 
 //</editor-fold>
-        //<editor-fold defaultstate="collapsed" desc="Laser">
+        //<editor-fold defaultstate="collapsed" desc="Laser and Power Ups">
         lasers = new ArrayList<>();
+        
+        powerUps = new ArrayList<>();
+        powerUps.add(new PowerUps(300, 300, "POWER_UP", ResourceTools.loadImageFromResource("SecondAsteroidGame/Obama_Ship.png")));
 //     
 //</editor-fold>
 
@@ -289,6 +308,7 @@ class Space extends Environment {
                         points = (points + 20);
                     }
                 }
+                
             }
             
             lasers.removeAll(toLaserRemoves);
@@ -323,10 +343,14 @@ class Space extends Environment {
         } else if (e.getKeyCode() == KeyEvent.VK_SPACE) {
             if (name.equals("American")) {
             AudioPlayer.play("/secondasteroidgame/shooting");
+            lasers.add(new Laser(lazerImage, ship.getX(), ship.getY(), TrigonometryCalculator.getVelocity(Math.toRadians(ship.getAngle() + 90), ship.getSpeed() + 7), 0, ship.getAngle()));
             }else if (name.equals("Trump")) {
             AudioPlayer.play("/secondasteroidgame/trump");
-            }
             lasers.add(new Laser(lazerImage, ship.getX(), ship.getY(), TrigonometryCalculator.getVelocity(Math.toRadians(ship.getAngle() + 90), ship.getSpeed() + 7), 0, ship.getAngle() + 90));
+            }else if (name.equals("Trump_Face")) {
+            AudioPlayer.play("/secondasteroidgame/trump");
+            lasers.add(new Laser(lazerImage, ship.getX(), ship.getY(), TrigonometryCalculator.getVelocity(Math.toRadians(ship.getAngle()), ship.getSpeed() + 7), 0, ship.getAngle()));
+            }
         }
     }
 
@@ -349,7 +373,11 @@ class Space extends Environment {
             graphics.setFont(new Font("Calibri", Font.BOLD, 36));
             graphics.drawString(score, 380, 30);
         }
-
+        if (powerUps != null) {
+            for (int i = 0; i < powerUps.size(); i++) {
+                powerUps.get(i).draw(graphics);
+            }
+        }
         //<editor-fold defaultstate="collapsed" desc="Asteroid">
         if (fullAsteroids != null) {
             for (Asteroid asteroid : fullAsteroids) {
@@ -387,6 +415,8 @@ class Space extends Environment {
             }
         }
 //</editor-fold>
+        
+        
 
         if (lasers != null) {
             for (Laser lazer : getLasersCopy()) {
@@ -395,8 +425,6 @@ class Space extends Environment {
                 }
             }
         }
-        
-
         if (ship != null) {
             ship.draw(graphics);
         }
