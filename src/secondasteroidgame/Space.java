@@ -234,8 +234,10 @@ class Space extends Environment {
         if (fullAsteroids != null) {
             ArrayList<Laser> toLaserRemoves = new ArrayList<>();
             ArrayList<Asteroid> toAsteroidRemoves = new ArrayList<>();
-
-            for (Laser laser : lasers) {
+            if (lasers !=null) {
+                
+            
+            for (Laser laser : getLasersCopy()) {
                 for (Asteroid asteroid : fullAsteroids) {
 //                    if (laser.getX() == asteroid.getX()) {
                     if (laser.getY() == asteroid.getY() - 5) {
@@ -308,7 +310,7 @@ class Space extends Environment {
                         points = (points + 20);
                     }
                 }
-                
+            }
             }
             
             lasers.removeAll(toLaserRemoves);
@@ -373,6 +375,7 @@ class Space extends Environment {
             graphics.setFont(new Font("Calibri", Font.BOLD, 36));
             graphics.drawString(score, 380, 30);
         }
+        
         if (powerUps != null) {
             for (int i = 0; i < powerUps.size(); i++) {
                 powerUps.get(i).draw(graphics);

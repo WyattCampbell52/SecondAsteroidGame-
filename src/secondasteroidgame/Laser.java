@@ -64,7 +64,7 @@ public class Laser {
     private Image image;
 
     private long startTime;
-    private long maxDurationMillis = 1000;
+    private long maxDurationMillis = 2000;
     private boolean alive = true;
 
     /**
