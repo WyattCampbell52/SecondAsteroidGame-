@@ -72,6 +72,8 @@ class Space extends Environment {
     Image rightQuaterBottomAsteroid;
     
     Rectangle intersection;
+    
+    private long startTime;
 //</editor-fold>
 
     public Space() {
@@ -93,7 +95,7 @@ class Space extends Environment {
         }else if (name.equals("Trump_Face")) {
             object = "Mexican";
             background = ResourceTools.loadImageFromResource("SecondAsteroidGame/Us_Mexico_Border.jpg");
-            lazerImage = ResourceTools.loadImageFromResource("SecondAsteroidGame/Eagle.png");
+            lazerImage = ResourceTools.loadImageFromResource("SecondAsteroidGame/Trump_Hair.png");
         }
         
 
@@ -142,6 +144,8 @@ class Space extends Environment {
 
     @Override
     public void timerTaskHandler() {
+        System.out.println(startTime);
+        
         score = "Score " + points;
 
         if (ship != null) {
@@ -327,6 +331,9 @@ class Space extends Environment {
 
     @Override
     public void keyPressedHandler(KeyEvent e) {
+        if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
+            
+        }
         if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
             ship.rotate(ship.getRotationSpeed());
             System.out.println(ship.getAngle());
@@ -351,7 +358,7 @@ class Space extends Environment {
             lasers.add(new Laser(lazerImage, ship.getX(), ship.getY(), TrigonometryCalculator.getVelocity(Math.toRadians(ship.getAngle() + 90), ship.getSpeed() + 7), 0, ship.getAngle() + 90));
             }else if (name.equals("Trump_Face")) {
             AudioPlayer.play("/secondasteroidgame/trump");
-            lasers.add(new Laser(lazerImage, ship.getX(), ship.getY(), TrigonometryCalculator.getVelocity(Math.toRadians(ship.getAngle()), ship.getSpeed() + 7), 0, ship.getAngle()));
+            lasers.add(new Laser(lazerImage, ship.getX(), ship.getY(), TrigonometryCalculator.getVelocity(Math.toRadians(ship.getAngle() + 90), ship.getSpeed() + 7), 0, ship.getAngle()));
             }
         }
     }
@@ -374,6 +381,7 @@ class Space extends Environment {
             graphics.setColor(Color.WHITE);
             graphics.setFont(new Font("Calibri", Font.BOLD, 36));
             graphics.drawString(score, 380, 30);
+
         }
         
         if (powerUps != null) {
