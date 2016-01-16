@@ -6,6 +6,7 @@
 package secondasteroidgame;
 
 import environment.Velocity;
+import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
@@ -19,14 +20,18 @@ import path.TrigonometryCalculator;
  */
 public class Asteroid {
 
-    public Asteroid(Image image, int x, int y, Velocity velocity, int angularVelocity, int angle) {
-        this.image = image;
+    
+    
+    
+    public Asteroid(Image image, int x, int y, Velocity velocity, int angularVelocity, int angle, AsteroidType type) {
         this.x = x;
         this.y = y;
         this.velocity = velocity;
         this.angularVelocity = angularVelocity;
         this.angle = angle;
 
+        this.type = type;
+        
     }
 
     public void draw(Graphics graphics) {
@@ -37,9 +42,12 @@ public class Asteroid {
         at.setToRotation(getAngleInRadians(), x + (image.getWidth(null) / 2), y + (image.getHeight(null) / 2));
         g2d.setTransform(at);
         g2d.drawImage(image, x, y, null);
+
+        graphics.setColor(Color.red);
+        graphics.drawRect(x, y, image.getWidth(null), image.getHeight(null));
     }
 
-    public Rectangle getBounds() {
+    public Rectangle rectangle() {
         return new Rectangle(x, y, image.getWidth(null), image.getHeight(null));
     }
 
@@ -56,6 +64,7 @@ public class Asteroid {
     private int speed;
     private Image image;
     private int rotationSpeed = 5;
+    private AsteroidType type = AsteroidType.FULL;
 
     /**
      * @return the x
@@ -275,5 +284,19 @@ public class Asteroid {
         this.rotationSpeed = rotationSpeed;
     }
         //</editor-fold>
+
+    /**
+     * @return the type
+     */
+    public AsteroidType getType() {
+        return type;
+    }
+
+    /**
+     * @param type the type to set
+     */
+    public void setType(AsteroidType type) {
+        this.type = type;
+    }
 
 }

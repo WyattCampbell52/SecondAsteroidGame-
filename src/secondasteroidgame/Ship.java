@@ -281,6 +281,10 @@ public class Ship {
     public String getObject() {
         return object;
     }
+    
+    public Rectangle rectangle() {
+        return new Rectangle(x, y, image.getWidth(null), image.getHeight(null));
+    }
 
     /**
      * @param object the object to set

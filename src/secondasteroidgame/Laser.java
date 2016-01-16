@@ -6,6 +6,7 @@
 package secondasteroidgame;
 
 import environment.Velocity;
+import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
@@ -38,10 +39,13 @@ public class Laser {
         at.setToRotation(getAngleInRadians(), x + (image.getWidth(null) / 2), y + (image.getHeight(null) / 2));
         g2d.setTransform(at);
         g2d.drawImage(image, x, y, null);
+        
+        graphics.setColor(Color.red);
+        graphics.drawRect(x, y, image.getWidth(null), image.getHeight(null));
 
     }
 
-    public Rectangle getBounds() {
+    public Rectangle rectangle() {
         return new Rectangle(x, y, image.getWidth(null), image.getHeight(null));
     }
 
