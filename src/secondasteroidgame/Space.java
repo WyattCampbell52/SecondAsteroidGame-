@@ -47,7 +47,9 @@ class Space extends Environment {
 
 //</editor-fold>
     Hub hub;
+    Hub hp;
     int points;
+    int healthPoints;
 
     String object;
     String rightHalfObject;
@@ -58,6 +60,7 @@ class Space extends Environment {
     String rightQuaterBottomObject;
     String name;
     String score;
+    String health;
 
     Image shipChoice;
     Image lazerImage;
@@ -74,6 +77,7 @@ class Space extends Environment {
 //</editor-fold>
 
     public Space() {
+        healthPoints = 100;
 //        name = "American";
         name = JOptionPane.showInputDialog("What Ship? American, Soviet, Trump, or Campbell");
         System.out.println(name);
@@ -119,16 +123,15 @@ class Space extends Environment {
         rightQuaterBottomAsteroids = new ArrayList<>();
 
 //</editor-fold>
-        
         //<editor-fold defaultstate="collapsed" desc="Laser and Power Ups">
         lasers = new ArrayList<>();
 
         powerUps = new ArrayList<>();
-        powerUps.add(new PowerUps(300, 300, "POWER_UP", ResourceTools.loadImageFromResource("SecondAsteroidGame/Obama_Ship.png")));
 //     
 //</editor-fold>
 
         hub = new Hub(score, 380, 30);
+        hp = new Hub(health, 0, 130);
     }
 
     @Override
@@ -140,6 +143,7 @@ class Space extends Environment {
         System.out.println(startTime);
 
         score = "Score " + points;
+        health = "Health " + healthPoints;
 
         if (ship != null) {
             ship.move();
@@ -235,11 +239,6 @@ class Space extends Environment {
 
                 for (Laser laser : getLasersCopy()) {
                     for (Asteroid asteroid : fullAsteroids) {
-//                    if (laser.getX() == asteroid.getX()) {
-                        
-                        
-                        
-//                        if (laser.getY() == asteroid.getY() - 5) {
                         if (laser.rectangle().intersects(asteroid.rectangle())) {
                             AudioPlayer.play("/secondasteroidgame/Bomb");
                             toAsteroidRemoves.add(asteroid);
@@ -249,10 +248,14 @@ class Space extends Environment {
                             rightHalfAsteroids.add(new Asteroid(rightHalfAsteroid, asteroid.getX() - 5, asteroid.getY(), new Velocity(+asteroid.getVelocity().x, +asteroid.getVelocity().y), asteroid.getAngularVelocity(), asteroid.getAngle()));
                             points = (points + 10);
                         }
+                        if (ship.rectangle().intersects(asteroid.rectangle())) {
+                                toAsteroidRemoves.add(asteroid);
+                                System.out.println("hit");
+                                healthPoints= (healthPoints - 10);
+                        }
                     }
                     for (Asteroid asteroid : leftHalfAsteroids) {
-                                                if (laser.rectangle().intersects(asteroid.rectangle())) {
-//if (laser.getY() == asteroid.getY()) {
+                        if (laser.rectangle().intersects(asteroid.rectangle())) {
                             AudioPlayer.play("/secondasteroidgame/Bomb");
                             toLaserRemoves.add(laser);
                             toAsteroidRemoves.add(asteroid);
@@ -261,10 +264,14 @@ class Space extends Environment {
                             leftQuaterBottomAsteroids.add(new Asteroid(leftQuaterBottomAsteroid, asteroid.getX() + 5, asteroid.getY() - 5, new Velocity(asteroid.getVelocity().x + 5, asteroid.getVelocity().y + 5), asteroid.getAngularVelocity(), asteroid.getAngle()));
                             points = (points + 15);
                         }
+                        if (ship.rectangle().intersects(asteroid.rectangle())) {
+                                toAsteroidRemoves.add(asteroid);
+                                System.out.println("hit");
+                                healthPoints= (healthPoints - 10);
+                        }
                     }
-                    
+
                     for (Asteroid asteroid : rightHalfAsteroids) {
-//                        if (laser.getY() == asteroid.getY()) {
                         if (laser.rectangle().intersects(asteroid.rectangle())) {
                             AudioPlayer.play("/secondasteroidgame/Bomb");
                             toLaserRemoves.add(laser);
@@ -274,9 +281,13 @@ class Space extends Environment {
                             rightQuaterBottomAsteroids.add(new Asteroid(rightQuaterBottomAsteroid, asteroid.getX() - 5, asteroid.getY(), new Velocity(-asteroid.getVelocity().x, -asteroid.getVelocity().y + 5), asteroid.getAngularVelocity(), asteroid.getAngle()));
                             points = (points + 15);
                         }
+                        if (ship.rectangle().intersects(asteroid.rectangle())) {
+                                toAsteroidRemoves.add(asteroid);
+                                System.out.println("hit");
+                                healthPoints= (healthPoints - 10);
+                        }
                     }
                     for (Asteroid asteroid : rightQuaterTopAsteroids) {
-//                        if (laser.getY() == asteroid.getY()) {
                         if (laser.rectangle().intersects(asteroid.rectangle())) {
                             AudioPlayer.play("/secondasteroidgame/Bomb");
                             toLaserRemoves.add(laser);
@@ -284,9 +295,13 @@ class Space extends Environment {
                             System.out.println("Dead 3");
                             points = (points + 20);
                         }
+                        if (ship.rectangle().intersects(asteroid.rectangle())) {
+                                toAsteroidRemoves.add(asteroid);
+                                System.out.println("hit");
+                                healthPoints= (healthPoints - 10);
+                        }
                     }
                     for (Asteroid asteroid : rightQuaterBottomAsteroids) {
-//                        if (laser.getY() == asteroid.getY()) {
                         if (laser.rectangle().intersects(asteroid.rectangle())) {
                             AudioPlayer.play("/secondasteroidgame/Bomb");
                             toLaserRemoves.add(laser);
@@ -295,9 +310,13 @@ class Space extends Environment {
                             System.out.println("Dead 3");
                             points = (points + 20);
                         }
+                        if (ship.rectangle().intersects(asteroid.rectangle())) {
+                                toAsteroidRemoves.add(asteroid);
+                                System.out.println("hit");
+                                healthPoints= (healthPoints - 10);
+                        }
                     }
                     for (Asteroid asteroid : leftQuaterTopAsteroids) {
-//                        if (laser.getY() == asteroid.getY()) {
                         if (laser.rectangle().intersects(asteroid.rectangle())) {
                             AudioPlayer.play("/secondasteroidgame/Bomb");
                             toLaserRemoves.add(laser);
@@ -305,9 +324,13 @@ class Space extends Environment {
                             System.out.println("Dead 3");
                             points = (points + 20);
                         }
+                        if (ship.rectangle().intersects(asteroid.rectangle())) {
+                                toAsteroidRemoves.add(asteroid);
+                                System.out.println("hit");
+                                healthPoints= (healthPoints - 10);
+                        }
                     }
                     for (Asteroid asteroid : leftQuaterBottomAsteroids) {
-//                        if (laser.getY() == asteroid.getY()) {
                         if (laser.rectangle().intersects(asteroid.rectangle())) {
                             AudioPlayer.play("/secondasteroidgame/Bomb");
                             toLaserRemoves.add(laser);
@@ -329,6 +352,7 @@ class Space extends Environment {
             rightQuaterTopAsteroids.removeAll(toAsteroidRemoves);
             rightQuaterBottomAsteroids.removeAll(toAsteroidRemoves);
         }
+
     }
 //</editor-fold>
 
@@ -355,7 +379,7 @@ class Space extends Environment {
         } else if (e.getKeyCode() == KeyEvent.VK_SPACE) {
             if (name.equals("American")) {
                 AudioPlayer.play("/secondasteroidgame/shooting");
-                lasers.add(new Laser(lazerImage, ship.getX(), ship.getY(), TrigonometryCalculator.getVelocity(Math.toRadians(ship.getAngle() + 90), ship.getSpeed() + 7), 0, ship.getAngle()));
+                lasers.add(new Laser(lazerImage, ship.getX() + 20, ship.getY(), TrigonometryCalculator.getVelocity(Math.toRadians(ship.getAngle() + 90), ship.getSpeed() + 7), 0, ship.getAngle()));
             } else if (name.equals("Trump")) {
                 AudioPlayer.play("/secondasteroidgame/trump");
                 lasers.add(new Laser(lazerImage, ship.getX(), ship.getY(), TrigonometryCalculator.getVelocity(Math.toRadians(ship.getAngle() + 90), ship.getSpeed() + 7), 0, ship.getAngle() + 90));
@@ -384,7 +408,13 @@ class Space extends Environment {
             graphics.setColor(Color.WHITE);
             graphics.setFont(new Font("Calibri", Font.BOLD, 36));
             graphics.drawString(score, 380, 30);
+            graphics.drawString(health, 0, 30);
 
+        }
+        if (healthPoints <= 0) {
+            graphics.setColor(Color.red);
+            graphics.setFont(new Font("Calibri", Font.BOLD, 158));
+            graphics.drawString("Game Over", 0, 400);
         }
 
         if (powerUps != null) {
@@ -429,18 +459,20 @@ class Space extends Environment {
             }
         }
 //</editor-fold>
-
-        if (lasers != null) {
-            for (Laser lazer : getLasersCopy()) {
-                if (lazer.isAlive()) {
-                    lazer.draw(graphics);
+        if (healthPoints > 0) {
+            if (lasers != null) {
+                for (Laser lazer : getLasersCopy()) {
+                    if (lazer.isAlive()) {
+                        lazer.draw(graphics);
+                    }
                 }
             }
         }
-        if (ship != null) {
-            ship.draw(graphics);
+        if (healthPoints > 0) {
+            if (ship != null) {
+                ship.draw(graphics);
+            }
         }
-
     }
 
 }

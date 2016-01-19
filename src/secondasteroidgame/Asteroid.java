@@ -6,6 +6,7 @@
 package secondasteroidgame;
 
 import environment.Velocity;
+import images.ResourceTools;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -18,10 +19,17 @@ import path.TrigonometryCalculator;
  *
  * @author WyattCampbell
  */
-public class Asteroid {
-
+public final class Asteroid {
     
-    
+//<editor-fold defaultstate="collapsed" desc="Constructors">
+    public Asteroid(Image image, int x, int y, Velocity velocity, int angularVelocity, int angle) {
+        this.image = image;
+        this.x = x;
+        this.y = y;
+        this.velocity = velocity;
+        this.angularVelocity = angularVelocity;
+        this.angle = angle;
+    }
     
     public Asteroid(Image image, int x, int y, Velocity velocity, int angularVelocity, int angle, AsteroidType type) {
         this.x = x;
@@ -29,11 +37,11 @@ public class Asteroid {
         this.velocity = velocity;
         this.angularVelocity = angularVelocity;
         this.angle = angle;
-
-        this.type = type;
         
+        setType(type);
     }
-
+//</editor-fold>
+    
     public void draw(Graphics graphics) {
         Graphics2D g2d = (Graphics2D) graphics;
         AffineTransform olde = g2d.getTransform();
@@ -297,6 +305,17 @@ public class Asteroid {
      */
     public void setType(AsteroidType type) {
         this.type = type;
+        
+        switch (type){
+            case FULL: 
+                this.image = ResourceTools.loadImageFromResource("");
+                break;
+            case LEFT_HALF: 
+                this.image = ResourceTools.loadImageFromResource("");
+                break;
+                
+                
+        }
     }
 
 }

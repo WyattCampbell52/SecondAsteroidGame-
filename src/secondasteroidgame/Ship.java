@@ -38,10 +38,10 @@ public class Ship {
         at.setToRotation(getAngleInRadians(), x + (image.getWidth(null) / 2), y + (image.getHeight(null) / 2));
         g2d.setTransform(at);
         g2d.drawImage(image, x, y, null);
+        graphics.drawRect(x, y, image.getWidth(null), image.getHeight(null));
 
         g2d.setTransform(olde);
-        g2d.dispose();
-        
+        g2d.dispose();        
     }
     
     
@@ -59,7 +59,7 @@ public class Ship {
     private int angle;
     private int speed;
     private Image image;
-    private int rotationSpeed = 5;
+    private int rotationSpeed = 10;
 
     /**
      * @return the x
