@@ -5,6 +5,7 @@
  */
 package secondasteroidgame;
 
+import images.ResourceTools;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.Rectangle;
@@ -13,24 +14,33 @@ import java.awt.Rectangle;
  *
  * @author WyattCampbell
  */
-public class PowerUps {
+public class PowerUp {
     
     public void draw(Graphics graphics){
         graphics.drawImage(getImage(), getX(), getY(), null);
     }
     
-    public PowerUps(int x, int y, String type, Image image){
+    public PowerUp(int x, int y, String type){
         this.x = x;
         this.y = y;
-        this.type = type;
-        this.image = image;
+        this.type = type;        
+        if (type.equals(PowerUp.POWERUP_TYPE_AMERICAN_POISON)) {
+            image = ResourceTools.loadImageFromResource("SecondAsteroidGame/Obama.png");
+        }
     }
     
     public Rectangle getBounds() {
         return new Rectangle(x, y, image.getWidth(null), image.getHeight(null));
     }
-    
     //<editor-fold defaultstate="collapsed" desc="Properties">
+//    Obama
+        public static final String POWERUP_TYPE_AMERICAN_POISON = "Poison";
+//    Wall duh    
+        public static final String POWERUP_TYPE_AMERICAN_Wall = "Wall";
+//    Health    
+        public static final String POWERUP_TYPE_AMERICAN_Health = "Health";
+
+    
     private int x, y;
     private String type;
     private Image image;
