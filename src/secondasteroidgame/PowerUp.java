@@ -29,7 +29,7 @@ public class PowerUp {
         }
     }
     
-    public Rectangle getBounds() {
+    public Rectangle rectangle() {
         return new Rectangle(x, y, image.getWidth(null), image.getHeight(null));
     }
     //<editor-fold defaultstate="collapsed" desc="Properties">

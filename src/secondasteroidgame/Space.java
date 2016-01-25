@@ -48,6 +48,8 @@ class Space extends Environment {
 //</editor-fold>
     Hub hub;
     Hub hp;
+
+    int limit;
     int points;
     int healthPoints;
 
@@ -78,6 +80,7 @@ class Space extends Environment {
 //</editor-fold>
 
     public Space() {
+        limit = 5;
         healthPoints = 100;
 //        name = "American";
         name = JOptionPane.showInputDialog("What Ship? American, Soviet, Trump, or Campbell");
@@ -129,7 +132,7 @@ class Space extends Environment {
         lasers = new ArrayList<>();
 
         powerUp = new ArrayList<>();
-        powerUp.add(new PowerUp(500, 800, PowerUp.POWERUP_TYPE_AMERICAN_POISON));
+        powerUp.add(new PowerUp(100, 200, PowerUp.POWERUP_TYPE_AMERICAN_POISON));
 //     
 //</editor-fold>
 
@@ -267,6 +270,10 @@ class Space extends Environment {
                             leftQuaterTopAsteroids.add(new Asteroid(leftQuaterTopAsteroid, asteroid.getX() - 5, asteroid.getY(), new Velocity(asteroid.getVelocity().x + 5, asteroid.getVelocity().y - 5), asteroid.getAngularVelocity(), asteroid.getAngle()));
                             leftQuaterBottomAsteroids.add(new Asteroid(leftQuaterBottomAsteroid, asteroid.getX() + 5, asteroid.getY() - 5, new Velocity(asteroid.getVelocity().x + 5, asteroid.getVelocity().y + 5), asteroid.getAngularVelocity(), asteroid.getAngle()));
                             points = (points + 150);
+                            //random chance to drop a power up
+                            if (Math.random() < 0.9) {
+                                powerUp.add(new PowerUp(asteroid.getX(), asteroid.getY(), "poison"));
+                            }
                         }
                         if (ship.rectangle().intersects(asteroid.rectangle())) {
                             toAsteroidRemoves.add(asteroid);
@@ -346,6 +353,9 @@ class Space extends Environment {
                     }
                 }
             }
+            if (fullAsteroids.contains(limit)) {
+                fullAsteroids.clear();
+            }
 
             lasers.removeAll(toLaserRemoves);
             fullAsteroids.removeAll(toAsteroidRemoves);
@@ -359,8 +369,24 @@ class Space extends Environment {
         if (healthPoints > 0) {
             points++;
         }
+
     }
 //</editor-fold>
+
+    private void powerUps() {
+        if (powerUp != null) {
+            if (ship != null) {
+                for (PowerUp powerUp : powerUp) {
+                    if (powerUp.rectangle().intersects(ship.rectangle())) {
+                        if (powerUp.getType() == "Poison") {
+                            ship.accelerate(0);
+                            ship.decelarate(0);
+                        }
+                    }
+                }
+            }
+        }
+    }
 
     @Override
     public void keyPressedHandler(KeyEvent e) {
@@ -387,13 +413,13 @@ class Space extends Environment {
                 if (name.equals("American")) {
                     AudioPlayer.play("/secondasteroidgame/shooting");
                     lasers.add(new Laser(lazerImage, ship.getX() + 20, ship.getY(), TrigonometryCalculator.getVelocity(Math.toRadians(ship.getAngle() + 90), ship.getSpeed() + 7), 0, ship.getAngle()));
-                }  else if (name.equals("Trump")) {
+                } else if (name.equals("Trump")) {
                     AudioPlayer.play("/secondasteroidgame/trump");
                     lasers.add(new Laser(lazerImage, ship.getX() + 10, ship.getY(), TrigonometryCalculator.getVelocity(Math.toRadians(ship.getAngle() + 90), ship.getSpeed() + 7), 0, ship.getAngle()));
                 } else if (name.equals("Soviet")) {
                     lasers.add(new Laser(lazerImage, ship.getX() + 10, ship.getY(), TrigonometryCalculator.getVelocity(Math.toRadians(ship.getAngle() + 90), ship.getSpeed() + 7), 0, ship.getAngle()));
                 }
-            }  
+            }
         }
     }
 
@@ -429,6 +455,7 @@ class Space extends Environment {
                 powerUp.get(i).draw(graphics);
             }
         }
+
         //<editor-fold defaultstate="collapsed" desc="Asteroid">
         if (fullAsteroids != null) {
             for (Asteroid asteroid : fullAsteroids) {
@@ -466,6 +493,7 @@ class Space extends Environment {
             }
         }
 //</editor-fold>
+
         if (healthPoints > 0) {
             if (lasers != null) {
                 for (Laser lazer : getLasersCopy()) {
@@ -480,6 +508,7 @@ class Space extends Environment {
                 ship.draw(graphics);
             }
         }
+
     }
 
 }
