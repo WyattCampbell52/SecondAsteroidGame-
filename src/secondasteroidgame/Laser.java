@@ -204,10 +204,10 @@ public class Laser {
         } else if (x < -50) {
             x = 900;
         }
-        if (y > 550) {
+        if (y > 580) {
             y = -100;
         } else if (y < -100) {
-            y = 550;
+            y = 580;
         }
 
     }

@@ -6,6 +6,8 @@
 package secondasteroidgame;
 
 import environment.Velocity;
+import images.Animator;
+import images.ImageManager;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -27,6 +29,8 @@ public class Ship {
         this.velocity = velocity;
         this.angularVelocity = angularVelocity;
         this.angle = angle;
+
+        animator = new Animator(new AnimatedImageManager(), AnimatedImageManager.SHIP_MOVE_IMAGE_NAMES, 100);
     }
 
     public void draw(Graphics graphics) {
@@ -37,14 +41,14 @@ public class Ship {
         AffineTransform at = AffineTransform.getRotateInstance(Math.toRadians(angle));
         at.setToRotation(getAngleInRadians(), x + (image.getWidth(null) / 2), y + (image.getHeight(null) / 2));
         g2d.setTransform(at);
-        g2d.drawImage(image, x, y, null);
+        g2d.drawImage(getImage(), x, y, null);
         graphics.drawRect(x, y, image.getWidth(null), image.getHeight(null));
 
         g2d.setTransform(olde);
-        g2d.dispose();        
+        g2d.dispose();
     }
-    
-    
+
+    private Animator animator;
 
 //<editor-fold defaultstate="collapsed" desc="Properties">
     private String object;
@@ -59,7 +63,8 @@ public class Ship {
     private int angle;
     private int speed;
     private Image image;
-    private int rotationSpeed = 10;
+    private int rotationSpeed = 15;
+    private int health;
 
     /**
      * @return the x
@@ -123,6 +128,11 @@ public class Ship {
      * @return the image
      */
     public Image getImage() {
+//        if (animator != null) {
+//            return animator.getCurrentImage();
+//        } else {
+//            return image;
+//        }
         return image;
     }
 
@@ -273,7 +283,6 @@ public class Ship {
     public void setRotationSpeed(int rotationSpeed) {
         this.rotationSpeed = rotationSpeed;
     }
-    //</editor-fold>
 
     /**
      * @return the object
@@ -281,7 +290,7 @@ public class Ship {
     public String getObject() {
         return object;
     }
-    
+
     public Rectangle rectangle() {
         return new Rectangle(x, y, image.getWidth(null), image.getHeight(null));
     }
@@ -292,6 +301,34 @@ public class Ship {
     public void setObject(String object) {
         this.object = object;
     }
-    
+
+    /**
+     * @return the health
+     */
+    public int getHealth() {
+        return health;
+    }
+
+    /**
+     * @param health the health to set
+     */
+    public void setHealth(int health) {
+        this.health = health;
+    }
+
+    /**
+     * @param health the health to set
+     */
+    public void addHealth(int health) {
+        this.health += health;
+    }
+
+    /**
+     * @return true if the health is greater than 0, false otherwise
+     */
+    public boolean isAlive() {
+        return (health > 0);
+    }
+    //</editor-fold>
 
 }

@@ -25,7 +25,13 @@ public class PowerUp {
         this.y = y;
         this.type = type;        
         if (type.equals(PowerUp.POWERUP_TYPE_AMERICAN_POISON)) {
-            image = ResourceTools.loadImageFromResource("SecondAsteroidGame/Obama.png");
+            image = poison;
+        }
+        if (type.equalsIgnoreCase(POWERUP_TYPE_AMERICAN_Health)) {
+            image = health;
+        }
+        if (type.equalsIgnoreCase(POWERUP_TYPE_AMERICAN_Wall)) {
+            image = wall;
         }
     }
     
@@ -43,7 +49,11 @@ public class PowerUp {
     
     private int x, y;
     private String type;
+    private Image health;
+    private Image wall;
+    private Image poison;
     private Image image;
+    Ship ship;
     
     /**
      * @return the x
@@ -101,4 +111,46 @@ public class PowerUp {
         this.image = image;
     }
 //</editor-fold>
+
+    /**
+     * @return the health
+     */
+    public Image getHealth() {
+        return health;
+    }
+
+    /**
+     * @param health the health to set
+     */
+    public void setHealth(Image health) {
+        this.health = health;
+    }
+
+    /**
+     * @return the wall
+     */
+    public Image getwall() {
+        return wall;
+    }
+
+    /**
+     * @param wall the wall to set
+     */
+    public void setwall(Image wall) {
+        this.wall = wall;
+    }
+
+    /**
+     * @return the Poison
+     */
+    public Image getpoison() {
+        return poison;
+    }
+
+    /**
+     * @param poison the Poison to set
+     */
+    public void setpoison(Image poison) {
+        this.poison = poison;
+    }
 }
