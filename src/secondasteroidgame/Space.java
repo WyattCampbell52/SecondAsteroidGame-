@@ -460,7 +460,8 @@ class Space extends Environment {
 
     @Override
     public void keyPressedHandler(KeyEvent e) {
-        if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
+        if (e.getKeyCode() == KeyEvent.VK_F9) {
+            soundManager.stop(name);
             soundManager.play(AMERICANPIE, -1);
         }
         if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
@@ -494,6 +495,7 @@ class Space extends Environment {
         if (ship.getHealth() <= 0) {
             if (e.getKeyCode() == KeyEvent.VK_ENTER) {
                 ship.accelerate(0);
+                ship.setVelocity(new Velocity(0, 0));
                 lasers.clear();
                 powerUp.clear();
                 points = points - points;
