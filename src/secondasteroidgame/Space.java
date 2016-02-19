@@ -157,12 +157,14 @@ class Space extends Environment {
     SoundManager soundManager;
     public static final String POWERUP = "PowerUp";
     public static final String AMERICANPIE = "American Pie";
+    public static final String DEATH = "Death";
 
     private void setUpSound() {
 //        set up list of trackes in a playlist
         ArrayList<Track> tracks = new ArrayList<>();
         tracks.add(new Track(POWERUP, Source.FILE, "/secondasteroidgame/PowerUp.wav"));
         tracks.add(new Track(AMERICANPIE, Source.FILE, "/secondasteroidgame/American_Pie.wav"));
+        tracks.add(new Track(DEATH, Source.FILE, "/secondasteroidgame/Death.wav"));
 
 //        Playlist
         Playlist playlist = new Playlist(tracks);
@@ -596,6 +598,7 @@ class Space extends Environment {
                     ship.draw(graphics);
                 }
             } else {
+                soundManager.play(DEATH, 1);
                 graphics.setColor(Color.red);
                 graphics.setFont(new Font("Calibri", Font.BOLD, 158));
                 graphics.drawString("Game Over", 0, 400);
