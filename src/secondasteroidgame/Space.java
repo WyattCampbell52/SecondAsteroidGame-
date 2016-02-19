@@ -152,7 +152,7 @@ class Space extends Environment {
         setUpSound();
     }
 //    Ship Type
-    public static final String[] ships = {"American", "Trump", "Soviet", "Campbell"};
+    public static final String[] ships = {"American", "Trump", "Soviet"};
 
     SoundManager soundManager;
     public static final String POWERUP = "PowerUp";
