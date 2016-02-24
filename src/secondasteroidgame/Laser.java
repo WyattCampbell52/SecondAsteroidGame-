@@ -38,9 +38,13 @@ public class Laser {
         AffineTransform at = AffineTransform.getRotateInstance(Math.toRadians(angle));
         at.setToRotation(getAngleInRadians(), x + (image.getWidth(null) / 2), y + (image.getHeight(null) / 2));
         g2d.setTransform(at);
+        
+        g2d.setColor(Color.YELLOW);
+        g2d.drawRect(x-2, y-2, image.getWidth(null) + 4, image.getHeight(null) +2);
         g2d.drawImage(image, x, y, null);
         
-        graphics.setColor(Color.red);
+        
+        graphics.setColor(Color.RED);
         graphics.drawRect(x, y, image.getWidth(null), image.getHeight(null));
 
     }
